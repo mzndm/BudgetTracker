@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BudgetTracker.Server.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,5 +15,8 @@ namespace BudgetTracker.Server.Data
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Category> Categories { get; set; }
+
     }
 }
