@@ -1,0 +1,11 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 500px;
+  margin: auto;
+}
+
+.form__field {
+  /* height: 100px; */
+}
