@@ -17,6 +17,7 @@ namespace BudgetTracker.Server.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
     }
 }
