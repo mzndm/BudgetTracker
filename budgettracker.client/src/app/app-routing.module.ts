@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
-import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
@@ -15,14 +14,21 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        component: HomeComponent
+        loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
+      },
+      {
+        path: 'accounts',
+        loadChildren: () => import('./pages/accounts/accounts.module').then(m => m.AccountsModule),
+      },
+      {
+        path: 'categories',
+        loadChildren: () => import('./pages/categories/categories.module').then(m => m.CategoriesModule),
       }
     ]
   },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module')
-      .then(module => module.AuthModule)
+    loadChildren: () => import('./auth/auth.module').then(module => module.AuthModule)
   },
   { path: '**', redirectTo: '/' } // Fallback
 ];
