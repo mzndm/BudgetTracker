@@ -1,0 +1,11 @@
+<div class="toolbar">
+  <div class="toolbar__logo">BT</div>
+
+  <div class="menu">
+    @for (item of menu; track item.label) {
+      <div class="menu__item">
+        <a [routerLink]="item.link">{{ item.label }}</a>
+      </div>
+    }
+  </div>
+</div>

@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
     canActivate: [AuthGuard],
     children: [
       {
@@ -26,6 +24,7 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module')
       .then(module => module.AuthModule)
   },
+  { path: '**', redirectTo: '/' } // Fallback
 ];
 
 @NgModule({
