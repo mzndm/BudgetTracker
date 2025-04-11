@@ -1,28 +1,33 @@
-<form class="form" [formGroup]="form">
-  <mat-form-field class="form__field" appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput type="email" formControlName="email" placeholder="Ex. pat@example.com">
-    @if (form.controls['email'].hasError('email') && !form.controls['email'].hasError('required')) {
-      <mat-error>Please enter a valid email address</mat-error>
-    }
-    @if (form.controls['email'].hasError('required')) {
-      <mat-error>Email is <strong>required</strong></mat-error>
-    }
-  </mat-form-field>
-  
-  <mat-form-field class="form__field" appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" placeholder="********">
-    @if (form.controls['password'].hasError('required')) {
-      <mat-error>Password is <strong>required</strong></mat-error>
-    }
-  </mat-form-field>
+<div class="page">
+  <div class="auth">
+    <form class="form" [formGroup]="form">
+      <h1 class="auth__h1">Login</h1>
+      <mat-form-field class="form__field" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="Ex. pat@example.com">
+        @if (form.controls['email'].hasError('email') && !form.controls['email'].hasError('required')) {
+          <mat-error>Please enter a valid email address</mat-error>
+        }
+        @if (form.controls['email'].hasError('required')) {
+          <mat-error>Email is <strong>required</strong></mat-error>
+        }
+      </mat-form-field>
 
-  <button mat-flat-button (click)="submit()">Login</button>
+      <mat-form-field class="form__field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="********">
+        @if (form.controls['password'].hasError('required')) {
+          <mat-error>Password is <strong>required</strong></mat-error>
+        }
+      </mat-form-field>
 
-  <p>or</p>
+      <button mat-flat-button (click)="submit()">Login</button>
 
-  <p>
-    <a mat-stroked-button routerLink="/auth/register">Create account</a>
-  </p>
-</form>
+      <footer class="auth__footer">
+        <p>or</p>
+        <p><a mat-stroked-button routerLink="/auth/register">Create account</a></p>
+      </footer>
+    </form>
+  </div>
+</div>
+
