@@ -6,6 +6,12 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditAccountComponent} from "./components/edit-account/edit-account.component";
 import {DeleteDialogComponent} from "../../shared/components/delete-dialog/delete-dialog.component";
 
+interface Dashboard {
+  assets: number;
+  liabilities: number;
+  balance: number;
+}
+
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -15,6 +21,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();
 
   public accounts$ = new BehaviorSubject<Account[] | null>(null);
+  public dashboard$ = new BehaviorSubject<Dashboard | null>(null);
 
   constructor(
     private data: DataService,
@@ -23,6 +30,14 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAccounts();
+
+    this.accounts$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(accounts => {
+        if (accounts && accounts.length > 0) {
+          this.calculateBalance(accounts)
+        }
+      })
   }
 
   ngOnDestroy(): void {
@@ -37,6 +52,27 @@ export class AccountsComponent implements OnInit, OnDestroy {
         tap(accounts => this.accounts$.next(accounts))
       )
       .subscribe();
+  }
+
+  calculateBalance(accounts: Account[]): void {
+    const dashboard = {
+      assets: 0,
+      liabilities: 0,
+      balance: 0
+    };
+
+    accounts.forEach(account => {
+      if (account.amount > 0) {
+        dashboard.assets += account.amount;
+      } else {
+        dashboard.liabilities -= account.amount;
+      }
+    });
+
+    dashboard.balance = dashboard.assets - dashboard.liabilities;
+
+    this.dashboard$.next(dashboard);
+
   }
 
   createAccount(): void {

@@ -4,17 +4,17 @@
   <div class="dashboard">
     <div class="dashboard__row dashboard__assets">
       <span class="dashboard__name">Assets</span>
-      <span class="dashboard__result">0 UAH</span>
+      <span class="dashboard__result">{{(dashboard$ | async)?.assets || 0}} UAH</span>
     </div>
 
     <div class="dashboard__row dashboard__liabilities">
       <span class="dashboard__name">Liabilities</span>
-      <span class="dashboard__result">0 UAH</span>
+      <span class="dashboard__result">{{(dashboard$ | async)?.liabilities || 0}} UAH</span>
     </div>
 
     <div class="dashboard__row dashboard__balance">
       <span class="dashboard__name">Balance</span>
-      <span class="dashboard__result">0 UAH</span>
+      <span class="dashboard__result">{{(dashboard$ | async)?.balance || 0}} UAH</span>
     </div>
   </div>
 
