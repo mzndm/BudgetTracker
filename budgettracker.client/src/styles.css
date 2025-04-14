@@ -26,3 +26,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
 }
+
+.page {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+
+  .page__title {
+    font-size: 2rem;
+  }
+}
+
+.container {
+  max-width: 1200px;
+  padding: 0 1rem;
+  margin: 0 auto;
+}

@@ -1,1 +1,61 @@
-<p>accounts works!</p>
+<div class="container accounts">
+  <h1 class="page__title">Accounts</h1>
+
+  <div class="dashboard">
+    <div class="dashboard__row dashboard__assets">
+      <span class="dashboard__name">Assets</span>
+      <span class="dashboard__result">0 UAH</span>
+    </div>
+
+    <div class="dashboard__row dashboard__liabilities">
+      <span class="dashboard__name">Liabilities</span>
+      <span class="dashboard__result">0 UAH</span>
+    </div>
+
+    <div class="dashboard__row dashboard__balance">
+      <span class="dashboard__name">Balance</span>
+      <span class="dashboard__result">0 UAH</span>
+    </div>
+  </div>
+
+  <button mat-stroked-button class="button accounts__button"
+          (click)="createAccount()">
+    Add new account
+  </button>
+
+  <div class="accounts__list">
+    @if (!(accounts$ | async)?.length) {
+      <p>You do not have any account. Please add account</p>
+    }
+
+    @for (account of accounts$ | async; track account.id) {
+      <div class="account">
+        <figure class="account__icon">
+          @switch (account.type) {
+            @case (0) { <mat-icon>payments</mat-icon> }
+            @case (1) { <mat-icon>credit_card</mat-icon> }
+            @case (2) { <mat-icon>account_balance</mat-icon> }
+            @default { <mat-icon>savings</mat-icon> }
+          }
+        </figure>
+
+        <div class="account__info">
+          <div class="account__name">{{account.name}}</div>
+          <div class="account__amount" [class.account__amount--warn]="account.amount < 0">
+            {{account.amount}} {{account.currency}}
+          </div>
+        </div>
+
+        <button mat-icon-button class="account__button"
+                (click)="editAccount(account.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button class="account__button account__button--delete"
+                (click)="deleteAccount(account.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+</div>

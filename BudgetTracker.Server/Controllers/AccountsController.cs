@@ -44,11 +44,6 @@ namespace BudgetTracker.Server.Controllers
                 .Where(a => a.Owner == user.Id)
                 .ToListAsync();
 
-            if (accounts == null || !accounts.Any())
-            {
-                return NotFound("No accounts found.");
-            }
-
             return Ok(accounts);
         }
 

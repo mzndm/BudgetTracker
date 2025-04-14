@@ -5,12 +5,17 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 
 const PROXY_CONFIG = [
   {
-    context: ['/auth'],    
+    context: ['/auth'],
     target,
-    secure: false,  
+    secure: false,
     pathRewrite: {
-      "^/auth": "", 
+      "^/auth": "",
     },
+  },
+  {
+    context: ['/api'],
+    target,
+    secure: false
   }
 ]
 
