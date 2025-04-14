@@ -28,7 +28,7 @@ export class DataService {
   }
 
   updateAccount(account: Account): Observable<Account> {
-    return this.http.patch<Account>(`${this.apiBasePath}/accounts/${account.id}`, account)
+    return this.http.put<Account>(`${this.apiBasePath}/accounts/${account.id}`, account)
   }
 
   deleteAccount(accountId: number): Observable<any> {
