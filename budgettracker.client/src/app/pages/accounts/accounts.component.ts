@@ -4,6 +4,7 @@ import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
 import {DataService} from "../../services/data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {EditAccountComponent} from "./components/edit-account/edit-account.component";
+import {DeleteDialogComponent} from "../../shared/components/delete-dialog/delete-dialog.component";
 
 @Component({
   selector: 'app-accounts',
@@ -75,6 +76,19 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   deleteAccount(id: number): void {
-    console.log('Delete account...', id);
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Confirm',
+        message: `Are you sure you want to delete the account?`
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'ok') {
+        this.data.deleteAccount(id)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getAccounts());
+      }
+    });
   }
 }
