@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Account} from "../shared/models";
+import {Account, Category} from "../shared/models";
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +36,28 @@ export class DataService {
   }
 
   // #end Accounts
+
+  // #start Categories
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.apiBasePath}/categories`)
+  }
+
+  getCategory(id: number): Observable<Category> {
+    return this.http.get<Category>(`${this.apiBasePath}/categories/${id}`)
+  }
+
+  createCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.apiBasePath}/categories`, category)
+  }
+
+  updateCategory(category: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.apiBasePath}/categories/${category.id}`, category)
+  }
+
+  deleteCategory(categoryId: number): Observable<any> {
+    return this.http.delete(`${this.apiBasePath}/categories/${categoryId}`)
+  }
+
+  // #end Categories
 }

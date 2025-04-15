@@ -1,1 +1,68 @@
-<p>categories works!</p>
+<div class="container categories">
+  <header class="page__header">
+    <h1 class="page__title">Categories</h1>
+
+    <button mat-stroked-button class="button accounts__button"
+            (click)="createCategory()">
+      Add new category
+    </button>
+  </header>
+
+  <mat-tab-group class="tabs"
+                 (selectedIndexChange)="typeChanged($event)"
+                 animationDuration="0">
+    @for (tab of categoryTabs; track tab.id) {
+      <mat-tab [label]="tab.name">
+        <div class="categories__container">
+          <div class="parent__categories column">
+            <div class="list list__parent">
+              @for (category of tab.categories$ | async; track category) {
+                <div class="list__item" (click)="selectCategory(category)">
+                  <mat-icon class="list__icon">{{category.icon || "shopping_cart" }}</mat-icon>
+                  <h4 class="list__title">{{category.name}}</h4>
+
+                  <button mat-icon-button class="list__button"
+                          (click)="editCategory(category)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button mat-icon-button class="list__button list__button--delete"
+                          (click)="deleteCategory(category.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="children__categories column">
+            @if (activeCategory && childrenCategories$ | async; as subcategories) {
+              <div class="list list__children">
+                @for (subcategory of subcategories; track subcategory) {
+                  @if (subcategory.parentCategory === activeCategory?.id) {
+                    <div class="list__item">
+                      <mat-icon class="list__icon">{{subcategory.icon || "shopping_bag" }}</mat-icon>
+                      <div class="list__title">{{subcategory.name}}</div>
+
+                      <button mat-icon-button class="list__button"
+                              (click)="editCategory(subcategory)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+
+                      <button mat-icon-button class="list__button list__button--delete"
+                              (click)="deleteCategory(subcategory.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  } @else {
+                    <p>Category {{activeCategory?.name}} hasn't subcategories yet</p>
+                  }
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </mat-tab>
+    }
+  </mat-tab-group>
+</div>
