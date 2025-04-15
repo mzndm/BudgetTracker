@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>{{ data.category ? 'Edit' : 'Create' }} Category</h2>
+<div mat-dialog-content>
+  <form class="form" [formGroup]="form">
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>Category Type</mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option *ngFor="let type of categoryTypes" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name" placeholder="Category name">
+      @if (form.controls['name'].hasError('required')) {
+        <mat-error>Name is <strong>required</strong></mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="outline">
+      <mat-label>Icon</mat-label>
+      <mat-icon class="material-symbols-outlined" matIconPrefix>{{form.controls['icon'].value}}</mat-icon>
+      <input matInput type="text" formControlName="icon" placeholder="Category icon">
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>Parent Category</mat-label>
+      <mat-select formControlName="parentCategory">
+        <mat-option [value]="null">--none--</mat-option>
+        @for (category of data.parentCategories; track category) {
+          @if (category.id !== data.category?.id) {
+            <mat-option [value]="category.id">
+              {{ category.name }}
+            </mat-option>
+          }
+        }
+
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</div>

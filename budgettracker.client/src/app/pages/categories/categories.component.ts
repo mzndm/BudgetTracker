@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
 import {Category} from "../../shared/models";
+import {EditCategoryComponent} from "./components/edit-category/edit-category.component";
+import {MatDialog} from "@angular/material/dialog";
 
 interface CategoryTab {
   id: number;
@@ -37,10 +39,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   allCategories$ = new BehaviorSubject<Category[]>([]);
   childrenCategories$ = new BehaviorSubject<Category[]>([]);
+  parentCategories$ = new BehaviorSubject<Category[]>([]);
   activeCategory: Category | null = null;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +57,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         this.categoryTabs[1].categories$.next(categories.filter(category => category.type === 1));
         this.categoryTabs[2].categories$.next(categories.filter(category => category.type === 2));
         this.childrenCategories$.next(categories.filter(category => category.parentCategory !== null));
+        this.parentCategories$.next(categories.filter(category => category.parentCategory === null));
       })
   }
 
@@ -71,7 +76,22 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   createCategory(): void {
-    console.log('Create Category');
+    const dialogRef = this.dialog.open(EditCategoryComponent, {
+      width: '400px',
+      data: {
+        parentCategories: this.parentCategories$.value
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.createCategory(result)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getCategories());
+      } else {
+        console.log('Dialog was closed without saving');
+      }
+    });
   }
 
   typeChanged(index: number): void {
@@ -84,7 +104,29 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   editCategory(category: Category): void {
-    console.log('Edit Category', category);
+    const dialogRef = this.dialog.open(EditCategoryComponent, {
+      width: '400px',
+      data: {
+        parentCategories: this.parentCategories$.value,
+        category: {
+          id: category.id,
+          type: category.type,
+          name: category.name,
+          icon: category.icon,
+          parentCategory: category.parentCategory,
+        }
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.updateCategory({...category, ...result})
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getCategories());
+      } else {
+        console.log('Dialog was closed without saving');
+      }
+    });
   }
 
   deleteCategory(id: number): void {
