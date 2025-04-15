@@ -5,7 +5,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './auth/auth.interceptor';
+import {AuthInterceptor, RefreshInterceptor} from './auth/auth.interceptor';
 import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
@@ -21,6 +21,7 @@ import {SharedModule} from "./shared/shared.module";
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RefreshInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
