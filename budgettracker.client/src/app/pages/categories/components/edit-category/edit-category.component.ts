@@ -6,6 +6,7 @@ import {Category} from "../../../../shared/models";
 interface IEditCategory {
   parentCategories: Category[];
   category?: Category;
+  categoryId: number;
 }
 
 @Component({
@@ -23,7 +24,6 @@ export class EditCategoryComponent implements OnInit {
   ];
 
   public form: FormGroup = this.formBuilder.group({
-    id: [''],
     type: [0, Validators.required],
     name: ['', Validators.required],
     icon: ['shopping_cart'],

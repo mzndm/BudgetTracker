@@ -29,13 +29,12 @@
       <mat-select formControlName="parentCategory">
         <mat-option [value]="null">--none--</mat-option>
         @for (category of data.parentCategories; track category) {
-          @if (category.id !== data.category?.id) {
+          @if (category.id !== data.categoryId) {
             <mat-option [value]="category.id">
               {{ category.name }}
             </mat-option>
           }
         }
-
       </mat-select>
     </mat-form-field>
   </form>

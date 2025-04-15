@@ -4,6 +4,7 @@ import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
 import {Category} from "../../shared/models";
 import {EditCategoryComponent} from "./components/edit-category/edit-category.component";
 import {MatDialog} from "@angular/material/dialog";
+import {DeleteDialogComponent} from "../../shared/components/delete-dialog/delete-dialog.component";
 
 interface CategoryTab {
   id: number;
@@ -110,8 +111,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       width: '400px',
       data: {
         parentCategories: this.parentCategories$.value,
+        categoryId: category.id,
         category: {
-          id: category.id,
           type: category.type,
           name: category.name,
           icon: category.icon,
@@ -132,7 +133,20 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   deleteCategory(id: number): void {
-    console.log('Delete Category', id);
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Confirm',
+        message: `Are you sure you want to delete the category?`
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'ok') {
+        this.dataService.deleteCategory(id)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getCategories());
+      }
+    });
   }
 
 }
