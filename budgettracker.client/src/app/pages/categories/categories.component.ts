@@ -53,11 +53,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.allCategories$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(categories => {
-        this.categoryTabs[0].categories$.next(categories.filter(category => category.type === 0));
-        this.categoryTabs[1].categories$.next(categories.filter(category => category.type === 1));
-        this.categoryTabs[2].categories$.next(categories.filter(category => category.type === 2));
+        const parents = categories.filter(category => category.parentCategory === null);
         this.childrenCategories$.next(categories.filter(category => category.parentCategory !== null));
-        this.parentCategories$.next(categories.filter(category => category.parentCategory === null));
+
+        this.categoryTabs[0].categories$.next(parents.filter(category => category.type === 0));
+        this.categoryTabs[1].categories$.next(parents.filter(category => category.type === 1));
+        this.categoryTabs[2].categories$.next(parents.filter(category => category.type === 2));
+        this.parentCategories$.next(parents);
       })
   }
 
@@ -95,7 +97,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   typeChanged(index: number): void {
-    console.log('Type Changed', index);
+    this.activeCategory = null;
   }
 
   selectCategory(category: Category): void {

@@ -16,9 +16,13 @@
         <div class="categories__container">
           <div class="parent__categories column">
             <div class="list list__parent">
-              @for (category of tab.categories$ | async; track category) {
-                <div class="list__item" (click)="selectCategory(category)">
-                  <mat-icon class="material-symbols-outlined list__icon">{{category.icon || "shopping_cart" }}</mat-icon>
+              @for (category of tab.categories$ | async; track category.id) {
+                <div class="list__item"
+                     [class.list__item--active]="category.id === activeCategory?.id"
+                     (click)="selectCategory(category)">
+                  <mat-icon class="material-symbols-outlined list__icon">
+                    {{category.icon || "shopping_cart" }}
+                  </mat-icon>
                   <h4 class="list__title">{{category.name}}</h4>
 
                   <button mat-icon-button class="list__button"
@@ -38,7 +42,7 @@
           <div class="children__categories column">
             @if (activeCategory && childrenCategories$ | async; as subcategories) {
               <div class="list list__children">
-                @for (subcategory of subcategories; track subcategory) {
+                @for (subcategory of subcategories; track subcategory.id) {
                   @if (subcategory.parentCategory === activeCategory?.id) {
                     <div class="list__item">
                       <mat-icon class="material-symbols-outlined list__icon">{{subcategory.icon || "shopping_bag" }}</mat-icon>
@@ -54,9 +58,11 @@
                         <mat-icon>delete</mat-icon>
                       </button>
                     </div>
-                  } @else {
-                    <p>Category {{activeCategory?.name}} hasn't subcategories yet</p>
                   }
+                  <!--
+                  @if(subcategory.parentCategory) {
+                    <p>Category {{activeCategory?.name}} hasn't subcategories yet</p>
+                  }-->
                 }
               </div>
             }
