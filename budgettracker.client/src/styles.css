@@ -52,3 +52,51 @@ h1, h2, h3, h4, h5, h6 {
 .form__field {
   width: 100%;
 }
+
+
+.list {
+  padding: 1rem 0;
+}
+
+.list__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--secondary-color);
+}
+
+.list__item--active {
+  border-color: var(--primary-color);
+  background-color: var(--white-color);
+}
+
+.list__icon {
+  color: var(--primary-color);
+}
+
+.list__title {
+  flex: 1 1 0;
+  padding: 0 1rem;
+}
+
+h4.list__title {
+  font-size: 1.2rem;
+}
+
+.list {
+
+  .list__button {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    margin-left: 1rem;
+  }
+
+  .list__button--delete {
+    color: var(--warn-color);
+    border: 1px solid var(--warn-color);
+  }
+}

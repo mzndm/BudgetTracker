@@ -4,7 +4,7 @@
 
     <button mat-stroked-button class="button"
             (click)="createTransaction()">
-      <mat-icon>add</mat-icon>
+      <mat-icon>edit</mat-icon>
       <span>Add transaction</span>
     </button>
   </header>
@@ -30,9 +30,41 @@
       </button>
     </header>
 
-    <div class="transactions__list">
+    <div class="transactions__list list">
       @for (transaction of transactions$ | async; track transaction.id) {
-        <p>{{transaction.categoryName}} - {{transaction.amount}}</p>
+
+
+        <div class="list__item">
+          <mat-icon class="material-symbols-outlined list__icon">
+            {{transaction.categoryIcon || "shopping_bag" }}
+          </mat-icon>
+
+          <h4 class="list__title">{{transaction.categoryName}}</h4>
+
+          <div class="details">
+            <p class="amount"
+               [class.amount__income]="transaction.type === 1"
+               [class.amount__transfer]="transaction.type === 2">
+              {{transaction.amount}} UAH
+            </p>
+            <p class="account">
+              {{transaction.accountName}}
+              @if (transaction.type === 2) {
+                => {{transaction.accountNameTo}}
+              }
+            </p>
+          </div>
+
+          <button mat-icon-button class="list__button"
+                  (click)="editTransaction(transaction)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button class="list__button list__button--delete"
+                  (click)="deleteTransaction(transaction.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       }
     </div>
   </div>

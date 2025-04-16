@@ -7,47 +7,6 @@
   }
 }
 
-.list {
-  padding: 1rem 0;
-}
-
-.list__item {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 1rem;
-  background-color: var(--background-color);
-  border-radius: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid var(--secondary-color);
-}
-
-.list__item--active {
-  border-color: var(--primary-color);
-  background-color: var(--white-color);
-}
-
-.list__icon {
-  color: var(--primary-color);
-}
-
-.list__title {
-  flex: 1 1 0;
-  font-size: 1.2rem;
-  padding: 0 1rem;
-}
-
-.list__button {
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  margin-left: 1rem;
-}
-
-.list__button--delete {
-  color: var(--warn-color);
-  border: 1px solid var(--warn-color);
-}
-
 .children__categories {
   .list__item {
     color: var(--accent-color);

@@ -2,8 +2,13 @@ app-home {
   .transactions__header {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     padding: 1rem 0;
+
+    .button {
+      color: var(--primary-color);
+    }
   }
 
   .picker__field {
@@ -30,5 +35,31 @@ app-home {
 
   .mat-datepicker-toggle button {
     color: var(--primary-color) !important;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    p {
+      margin: 0;
+    }
+
+    .amount {
+      color: var(--warn-color);
+    }
+
+    .amount__income {
+      color: var(--accent-color);
+    }
+
+    .amount__transfer {
+      color: var(--secondary-color);
+    }
+
+    .account {
+      color: var(--orange-color);
+    }
   }
 }

@@ -66,4 +66,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   createTransaction(): void {
     console.log('Creating new transaction');
   }
+
+  editTransaction(transaction: Transaction): void {
+    console.log('edit transaction');
+  }
+
+  deleteTransaction(id: number): void {
+    console.log('delete transaction');
+  }
 }
