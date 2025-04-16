@@ -1,14 +1,8 @@
-import {Statuses} from "./account";
-
-export enum CategoryTypes {
-  EXPENSE,
-  INCOME,
-  TRANSFER,
-}
+import {OperationTypes, Statuses} from "./enums";
 
 export interface Category {
   id: number;
-  type: CategoryTypes;
+  type: OperationTypes; // "expense" = 0, "income" = 1, "transfer" = 2
   name: string;
   icon: string;
   parentCategory: number | null;

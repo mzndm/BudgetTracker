@@ -1,12 +1,9 @@
+import {Statuses} from "./enums";
+
 export enum AccountTypes {
   CASH,
   CARD,
   BANK,
-}
-
-export enum Statuses {
-  INACTIVE,
-  ACTIVE,
 }
 
 export interface Account {

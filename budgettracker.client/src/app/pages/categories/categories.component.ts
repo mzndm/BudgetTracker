@@ -102,7 +102,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   selectCategory(category: Category): void {
-    console.log('Select Category', category);
     this.activeCategory = category;
   }
 

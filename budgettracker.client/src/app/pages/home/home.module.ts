@@ -2,6 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./home.component";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatIcon, MatIconModule} from "@angular/material/icon";
+import {MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from "@angular/material/datepicker";
+import {MatInput, MatInputModule} from "@angular/material/input";
+import {ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -16,7 +27,21 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatFormField,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatLabel,
+    MatInput,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatIconModule,
+    ReactiveFormsModule
   ]
 })
 export class HomeModule { }

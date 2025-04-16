@@ -1,3 +1,40 @@
-<div class="home">
-  <p>Home page</p>
+<div class="container home">
+  <header class="page__header">
+    <h1 class="page__title">Transactions</h1>
+
+    <button mat-stroked-button class="button"
+            (click)="createTransaction()">
+      <mat-icon>add</mat-icon>
+      <span>Add transaction</span>
+    </button>
+  </header>
+
+  <div class="transactions">
+    <header class="transactions__header">
+      <button mat-icon-button class="button button__icon"
+              (click)="changeDate(false)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="picker">
+        <mat-form-field class="picker__field">
+          <input matInput class="picker__input" [formControl]="activeDate" [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker" />
+          <mat-datepicker #picker disabled="false" />
+        </mat-form-field>
+      </div>
+
+      <button mat-icon-button class="button button__icon"
+              (click)="changeDate(true)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </header>
+
+    <div class="transactions__list">
+      @for (transaction of transactions$ | async; track transaction.id) {
+        <p>{{transaction.categoryName}} - {{transaction.amount}}</p>
+      }
+    </div>
+  </div>
+
 </div>

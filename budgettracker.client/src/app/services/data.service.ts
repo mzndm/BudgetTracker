@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Account, Category} from "../shared/models";
+import {Account, Category, Transaction, TransactionHttpParams} from "../shared/models";
 
 @Injectable({
   providedIn: 'root'
@@ -60,4 +60,30 @@ export class DataService {
   }
 
   // #end Categories
+
+  // #start Transactions
+
+  getTransactions(params?: TransactionHttpParams | any): Observable<Transaction[]> {
+    const httpParams = new HttpParams({ fromObject: params });
+    return this.http.get<Transaction[]>(`${this.apiBasePath}/transactions`, { params: httpParams })
+  }
+
+  getTransaction(id: number): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.apiBasePath}/transactions/${id}`)
+  }
+
+  createTransaction(transaction: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(`${this.apiBasePath}/transactions`, transaction)
+  }
+
+  updateTransaction(transaction: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(`${this.apiBasePath}/transactions/${transaction.id}`, transaction)
+  }
+
+  deleteTransaction(transactionId: number): Observable<any> {
+    return this.http.delete(`${this.apiBasePath}/transactions/${transactionId}`)
+  }
+
+  // #end Transactions
+
 }

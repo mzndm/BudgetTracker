@@ -1,0 +1,34 @@
+app-home {
+  .transactions__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .picker__field {
+    background-color: var(--background-color);
+    border-radius: 40px;
+    overflow: hidden;
+    padding: 0 16px;
+    border: 1px solid var(--primary-color);
+
+    .mat-mdc-form-field-subscript-wrapper {
+      height: 0;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0;
+      background-color: transparent;
+    }
+  }
+
+  .picker__input {
+    text-align: center;
+    color: var(--primary-color) !important;
+  }
+
+  .mat-datepicker-toggle button {
+    color: var(--primary-color) !important;
+  }
+}
