@@ -4,7 +4,9 @@ import {FormControl} from "@angular/forms";
 import {addDays, format, subDays} from "date-fns";
 import {DataService} from "../../services/data.service";
 import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
-import {Transaction} from "../../shared/models";
+import {Account, Category, Transaction} from "../../shared/models";
+import {MatDialog} from "@angular/material/dialog";
+import {EditTransactionComponent} from "./components/edit-transaction/edit-transaction.component";
 
 @Component({
   selector: 'app-home',
@@ -23,14 +25,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     value: format(new Date(), 'yyyy-MM-dd'),
     disabled: true
   });
-  public transactions$ = new BehaviorSubject<Transaction[] | null>(null);
+
+  transactions$ = new BehaviorSubject<Transaction[] | null>(null);
+  categories$ = new BehaviorSubject<Category[]>([]);
+  accounts$ = new BehaviorSubject<Account[]>([]);
 
   constructor(
     private dataService: DataService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
     this.getTransactions();
+    this.getAccounts();
+    this.getCategories();
 
     this.activeDate.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
@@ -53,6 +61,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  getAccounts(): void {
+    this.dataService.getAccounts()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap(data => this.accounts$.next(data))
+      )
+      .subscribe();
+  }
+
+  getCategories(): void {
+    this.dataService.getCategories()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap(data => this.categories$.next(data))
+      )
+      .subscribe();
+  }
+
   changeDate(direction: boolean): void {
     const date = new Date(this.activeDate.value);
 
@@ -64,7 +90,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   createTransaction(): void {
-    console.log('Creating new transaction');
+    const dialogRef = this.dialog.open(EditTransactionComponent, {
+      width: '400px',
+      data: {
+        accounts: this.accounts$.value,
+        categories: this.categories$.value
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.createTransaction({
+          date: this.activeDate.value,
+          ...result
+        })
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getTransactions());
+      } else {
+        console.log('Dialog was closed without saving');
+      }
+    });
   }
 
   editTransaction(transaction: Transaction): void {

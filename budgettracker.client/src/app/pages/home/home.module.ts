@@ -13,6 +13,9 @@ import {
 } from "@angular/material/datepicker";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
+import { EditTransactionComponent } from './components/edit-transaction/edit-transaction.component';
+import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 const routes: Routes = [
   {
@@ -23,7 +26,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    EditTransactionComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +45,12 @@ const routes: Routes = [
     MatInputModule,
     MatDatepickerModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatSelect,
+    MatOption,
+    MatDialogActions
   ]
 })
 export class HomeModule { }

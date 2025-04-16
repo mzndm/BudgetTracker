@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>{{ data.transaction ? 'Edit' : 'Create' }} Transaction</h2>
+<div mat-dialog-content>
+  <form class="form" [formGroup]="form">
+    <mat-form-field class="form__field" appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input matInput type="number" formControlName="amount" placeholder="0">
+      @if (form.controls['amount'].hasError('required')) {
+        <mat-error>Amount is <strong>required</strong>.</mat-error>
+      }
+
+      @if (form.controls['amount'].hasError('min')) {
+        <mat-error>Amount must be a positive number.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>Transaction Type</mat-label>
+      <mat-select formControlName="type" required (selectionChange)="typeChanged($event.value)">
+        @for (type of transactionTypes; track type.value) {
+          <mat-option [value]="type.value">{{ type.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>Account</mat-label>
+      <mat-select formControlName="accountId" required>
+        @for (account of data.accounts; track account) {
+          <mat-option [value]="account.id"
+                      (onSelectionChange)="setFormValue('accountName', account.name)">
+            {{ account.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>Parent category</mat-label>
+      <mat-select required (selectionChange)="parentChanged($event.value)">
+        @for (category of parentCategories$ | async; track category.id) {
+          <mat-option [value]="category.id">{{ category.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryId" required>
+        @for (category of subCategories$ | async; track category.id) {
+          <mat-option [value]="category.id"
+                      (onSelectionChange)="
+                        setFormValue('categoryName', category.name);
+                        setFormValue('categoryIcon', category.icon)">
+            {{ category.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</div>
