@@ -53,7 +53,8 @@
 
     <mat-form-field class="form__field" appearance="fill">
       <mat-label>Parent category</mat-label>
-      <mat-select required (selectionChange)="parentChanged($event.value)">
+      <mat-select [formControl]="parentCategoryIdControl" required
+                  (selectionChange)="parentChanged($event.value)">
         @for (category of parentCategories$ | async; track category.id) {
           <mat-option [value]="category.id">{{ category.name }}</mat-option>
         }

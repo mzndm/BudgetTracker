@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Account, Category, Transaction} from "../../../../shared/models";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 
 interface IEditTransaction {
@@ -37,6 +37,8 @@ export class EditTransactionComponent implements OnInit {
     accountNameTo: [null],
   });
 
+  parentCategoryIdControl = new FormControl(0);
+
   parentCategories$ = new BehaviorSubject<Category[]>([]);
   subCategories$ = new BehaviorSubject<Category[]>([]);
 
@@ -48,12 +50,37 @@ export class EditTransactionComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.transaction) {
       this.form.setValue(this.data);
+    } else {
+      this.prefillForm();
     }
 
     if (this.data.categories) {
       this.typeChanged(0);
     }
   }
+
+  prefillForm(): void {
+    const defaultParentCategory = this.data.categories.find(category => category.parentCategory === null && category.type === 0);
+
+    const defaultCategory = this.data.categories.find(category => category.parentCategory === defaultParentCategory?.id);
+
+    const defaultValues = {
+      amount: 0,
+      type: 0,
+      accountId: this.data.accounts[0].id,
+      accountName: this.data.accounts[0].name,
+      categoryId: defaultCategory?.id,
+      categoryName: defaultCategory?.name,
+      categoryIcon: defaultCategory?.icon,
+      note: '',
+      accountIdTo: null,
+      accountNameTo: null,
+    };
+
+    this.parentCategoryIdControl.setValue(defaultParentCategory!.id);
+    this.form.setValue(defaultValues);
+    this.parentChanged(defaultParentCategory!.id);
+  };
 
   setFormValue(control: string, value: any): void {
     this.form.controls[control].setValue(value);
