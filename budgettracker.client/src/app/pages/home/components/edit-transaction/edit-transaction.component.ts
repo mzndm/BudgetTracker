@@ -66,7 +66,7 @@ export class EditTransactionComponent implements OnInit {
     const defaultCategory = this.data.categories.find(category => category.parentCategory === defaultParentCategory?.id);
 
     const defaultValues = {
-      amount: 0,
+      amount: null,
       type: 0,
       accountId: this.data.accounts[0].id,
       accountName: this.data.accounts[0].name,
