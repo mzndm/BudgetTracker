@@ -113,7 +113,38 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   editTransaction(transaction: Transaction): void {
-    console.log('edit transaction');
+    const dialogRef = this.dialog.open(EditTransactionComponent, {
+      width: '400px',
+      data: {
+        transaction: {
+          amount: transaction.amount,
+          type: transaction.type,
+          accountId: transaction.accountId,
+          accountName: transaction.accountName,
+          categoryId: transaction.categoryId,
+          categoryName: transaction.categoryName,
+          categoryIcon: transaction.categoryIcon,
+          note: transaction.note,
+          accountIdTo: transaction.accountIdTo,
+          accountNameTo: transaction.accountNameTo,
+        },
+        accounts: this.accounts$.value,
+        categories: this.categories$.value
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.updateTransaction({
+          ...transaction,
+          ...result
+        })
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getTransactions());
+      } else {
+        console.log('Dialog was closed without saving');
+      }
+    });
   }
 
   deleteTransaction(id: number): void {

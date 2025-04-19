@@ -28,9 +28,9 @@
         @else { Account }
       </mat-label>
       <mat-select formControlName="accountId" required>
-        @for (account of data.accounts; track account) {
+        @for (account of data.accounts; track account.id) {
           <mat-option [value]="account.id"
-                      (onSelectionChange)="setFormValue('accountName', account.name)">
+                      (onSelectionChange)="setFormValue($event, 'accountName', account.name)">
             {{ account.name }}
           </mat-option>
         }
@@ -41,9 +41,9 @@
       <mat-form-field class="form__field" appearance="fill">
         <mat-label>Recipient account</mat-label>
         <mat-select formControlName="accountIdTo" required>
-          @for (account of data.accounts; track account) {
+          @for (account of data.accounts; track account.id) {
             <mat-option [value]="account.id"
-                        (onSelectionChange)="setFormValue('accountNameTo', account.name)">
+                        (onSelectionChange)="setFormValue($event,'accountNameTo', account.name)">
               {{ account.name }}
             </mat-option>
           }
@@ -67,12 +67,17 @@
         @for (category of subCategories$ | async; track category.id) {
           <mat-option [value]="category.id"
                       (onSelectionChange)="
-                        setFormValue('categoryName', category.name);
-                        setFormValue('categoryIcon', category.icon)">
+                        setFormValue($event,'categoryName', category.name);
+                        setFormValue($event,'categoryIcon', category.icon)">
             {{ category.name }}
           </mat-option>
         }
       </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form__field">
+      <mat-label>Note</mat-label>
+      <textarea matInput formControlName="note"></textarea>
     </mat-form-field>
 
   </form>

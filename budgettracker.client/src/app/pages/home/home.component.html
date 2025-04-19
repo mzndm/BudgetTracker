@@ -39,7 +39,10 @@
             {{transaction.categoryIcon || "shopping_bag" }}
           </mat-icon>
 
-          <h4 class="list__title">{{transaction.categoryName}}</h4>
+          <div class="list__main">
+            <h4 class="list__title">{{transaction.categoryName}}</h4>
+            <p class="list__text">{{transaction.note}}</p>
+          </div>
 
           <div class="details">
             <p class="amount"

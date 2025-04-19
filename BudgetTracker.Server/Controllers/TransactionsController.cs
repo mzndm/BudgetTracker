@@ -137,13 +137,20 @@ namespace BudgetTracker.Server.Controllers
                 return Unauthorized("User not authenticated.");
             }
 
-            var existingTransaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.Owner == user.Id);
+            var existingTransaction = await _context.Transactions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == id);
+
             if (existingTransaction == null)
             {
                 return NotFound("Transaction not found.");
             }
 
-            //transaction.Owner = user.Id;
+            if (existingTransaction.Owner != user.Id)
+            {
+                return Forbid("You are not authorized to update this transaction.");
+            }
+
             transaction.Changed = DateTime.UtcNow;
 
             // Adjust accounts for the updated transaction
@@ -152,6 +159,7 @@ namespace BudgetTracker.Server.Controllers
                 // Revert the effects of the previous transaction
                 await UpdateAccountsForTransaction(new Transaction
                 {
+                    Id = existingTransaction.Id,
                     Type = existingTransaction.Type,
                     Date = existingTransaction.Date,
                     AccountId = existingTransaction.AccountId,
@@ -167,8 +175,15 @@ namespace BudgetTracker.Server.Controllers
                 return BadRequest(ex.Message);
             }
 
-            // Update the transaction
-            _context.Entry(transaction).State = EntityState.Modified;
+            // Ensure only one instance is tracked
+            var trackedTransaction = _context.Transactions.Local.FirstOrDefault(t => t.Id == transaction.Id);
+            if (trackedTransaction != null)
+            {
+                _context.Entry(trackedTransaction).State = EntityState.Detached;
+            }
+
+            // Update transaction
+            _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
             return NoContent();

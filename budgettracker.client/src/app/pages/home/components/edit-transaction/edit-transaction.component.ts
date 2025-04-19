@@ -3,6 +3,7 @@ import {Account, Category, Transaction} from "../../../../shared/models";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
+import {MatOptionSelectionChange} from "@angular/material/core";
 
 interface IEditTransaction {
   transaction?: Transaction;
@@ -49,7 +50,7 @@ export class EditTransactionComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.transaction) {
-      this.form.setValue(this.data);
+      this.fillForm(this.data.transaction);
     } else {
       this.prefillForm();
     }
@@ -82,8 +83,19 @@ export class EditTransactionComponent implements OnInit {
     this.parentChanged(defaultParentCategory!.id);
   };
 
-  setFormValue(control: string, value: any): void {
-    this.form.controls[control].setValue(value);
+  fillForm(transaction: Transaction): void {
+    const transactionCategory = this.data.categories.find(category => category.id === transaction?.categoryId);
+    const parentCategory = this.data.categories.find(category => category.id === transactionCategory?.parentCategory);
+
+    this.parentCategoryIdControl.setValue(parentCategory!.id);
+    this.form.setValue(transaction);
+    this.parentChanged(parentCategory!.id);
+  };
+
+  setFormValue(e: MatOptionSelectionChange, control: string, value: any): void {
+    if(e?.isUserInput) {
+      this.form.controls[control].setValue(value);
+    }
   }
 
   typeChanged(typeId: number): void {
