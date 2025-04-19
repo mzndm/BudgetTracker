@@ -7,6 +7,7 @@ import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
 import {Account, Category, Transaction} from "../../shared/models";
 import {MatDialog} from "@angular/material/dialog";
 import {EditTransactionComponent} from "./components/edit-transaction/edit-transaction.component";
+import {DeleteDialogComponent} from "../../shared/components/delete-dialog/delete-dialog.component";
 
 @Component({
   selector: 'app-home',
@@ -148,6 +149,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   deleteTransaction(id: number): void {
-    console.log('delete transaction');
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Confirm',
+        message: `Are you sure you want to delete the transaction?`
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'ok') {
+        this.dataService.deleteTransaction(id)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => this.getTransactions());
+      }
+    });
   }
 }
