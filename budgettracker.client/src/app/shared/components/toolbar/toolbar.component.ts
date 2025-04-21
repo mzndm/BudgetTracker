@@ -8,16 +8,16 @@ import { Component } from '@angular/core';
 export class ToolbarComponent {
   menu = [
     {
-      'label': 'Home',
-      'link': '/home',
-    },
-    {
       'label': 'Accounts',
       'link': '/accounts',
     },
     {
       'label': 'Categories',
       'link': '/categories',
+    },
+    {
+      'label': 'Statistics',
+      'link': '/statistics',
     }
   ];
 
