@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {AuthInterceptor, RefreshInterceptor} from './auth/auth.interceptor';
 import {SharedModule} from "./shared/shared.module";
+import {provideCharts, withDefaultRegisterables} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {SharedModule} from "./shared/shared.module";
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshInterceptor, multi: true },
+    provideCharts(withDefaultRegisterables())
   ],
   bootstrap: [AppComponent]
 })

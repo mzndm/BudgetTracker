@@ -5,6 +5,7 @@ import {RouterLink} from "@angular/router";
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 
 
@@ -24,6 +25,7 @@ import {MatButton} from "@angular/material/button";
     MatDialogActions,
     MatDialogClose,
     MatButton,
+    MatIcon,
   ]
 })
 export class SharedModule { }

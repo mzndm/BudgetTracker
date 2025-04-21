@@ -1,0 +1,38 @@
+<div class="container statistics">
+  <header class="page__header">
+    <h1 class="page__title">Statistics</h1>
+  </header>
+
+  <div class="periods">
+    <span>Periods: </span>
+    @for (period of periods; track period.name) {
+      <button mat-button
+              class="periods__button" [class.periods__button--active]="activePeriod.id == period.id"
+              (click)="selectPeriod(period)">
+        {{period.label}}
+      </button>
+    }
+
+    <div class="diapason">
+      today: {{activeDate | date: 'dd MMM YYYY'}}
+    </div>
+  </div>
+
+  <mat-tab-group class="tabs" animationDuration="0">
+    @for (tab of statisticsTabs; track tab.id) {
+      <mat-tab [label]="tab.name">
+        <div class="statistics__container">
+          <div class="chart">
+            <span class="chart__total">Total <br /> {{tab.total}}</span>
+            <canvas baseChart
+                    class="chart__canvas"
+                    [data]="tab.cgf.data"
+                    [labels]="tab.cgf.data.labels"
+                    [type]="tab.cgf.type">
+            </canvas>
+          </div>
+        </div>
+      </mat-tab>
+    }
+  </mat-tab-group>
+</div>
