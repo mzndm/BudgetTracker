@@ -35,12 +35,15 @@ export class RefreshInterceptor implements HttpInterceptor {
               });
               return next.handle(clonedReq);
             }),
-            catchError(() => {
-              this.authService.logout();
-              return throwError(() => new Error('Session expired. Please log in again.'));
-            })
           );
         }
+        /* {
+          catchError((err) => {
+            console.log('logout', err);
+            this.authService.logout();
+            return throwError(() => new Error('Session expired. Please log in again.'));
+          })
+        } */
 
         return throwError(() => error);
       })
