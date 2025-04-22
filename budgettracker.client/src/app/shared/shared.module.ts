@@ -6,16 +6,19 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
+import { PeriodPipe } from './pipes/period.pipe';
 
 
 
 @NgModule({
   declarations: [
     ToolbarComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    PeriodPipe
   ],
   exports: [
-    ToolbarComponent
+    ToolbarComponent,
+    PeriodPipe
   ],
   imports: [
     CommonModule,

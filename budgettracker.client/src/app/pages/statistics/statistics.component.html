@@ -16,7 +16,19 @@
     </div>
 
     <div class="diapason">
-      today: {{activeDate | date: 'dd MMM YYYY'}}
+      <button mat-icon-button class="button button__icon"
+              (click)="changeDates(false)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="diapason__date">
+        {{activeDate | period: activePeriod.id}}
+      </div>
+
+      <button mat-icon-button class="button button__icon"
+              (click)="changeDates(true)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
     </div>
   </div>
 

@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
 import {DataService} from "../../services/data.service";
 import {
+  addMonths, addQuarters, addWeeks, addYears,
+  subMonths, subQuarters, subWeeks, subYears,
   endOfMonth, endOfQuarter, endOfWeek, endOfYear,
   format, startOfMonth, startOfQuarter, startOfWeek, startOfYear,
 } from "date-fns";
@@ -91,7 +93,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     private dataService: DataService,
   ) {}
 
-
   ngOnInit(): void {
     this.getTransactions();
   }
@@ -104,28 +105,16 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   selectPeriod(period: IPeriod): void {
     this.activePeriod = period;
 
-    switch (period.id) {
-      case 1: {
-        this.startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-        this.endDate = format(endOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-      } break;
-      case 2: {
-        this.startDate = format(startOfMonth(new Date()), 'yyyy-MM-dd');
-        this.endDate = format(endOfMonth(new Date()), 'yyyy-MM-dd');
-      } break;
-      case 3: {
-        this.startDate = format(startOfQuarter(new Date()), 'yyyy-MM-dd');
-        this.endDate = format(endOfQuarter(new Date()), 'yyyy-MM-dd');
-      } break;
-      case 4: {
-        this.startDate = format(startOfYear(new Date()), 'yyyy-MM-dd');
-        this.endDate = format(endOfYear(new Date()), 'yyyy-MM-dd');
-      } break;
-      default: {
-        this.startDate = format(startOfMonth(new Date()), 'yyyy-MM-dd');
-        this.endDate = format(endOfMonth(new Date()), 'yyyy-MM-dd');
-      } break;
-    }
+    const periodFunctions: Record<number, () => [Date, Date]>  = {
+      1: () => [startOfWeek(this.activeDate, { weekStartsOn: 1 }), endOfWeek(this.activeDate, { weekStartsOn: 1 })],
+      2: () => [startOfMonth(this.activeDate), endOfMonth(this.activeDate)],
+      3: () => [startOfQuarter(this.activeDate), endOfQuarter(this.activeDate)],
+      4: () => [startOfYear(this.activeDate), endOfYear(this.activeDate)]
+    };
+
+    const [start, end] = (periodFunctions[period.id] || periodFunctions[2])();
+    this.startDate = format(start, 'yyyy-MM-dd');
+    this.endDate = format(end, 'yyyy-MM-dd');
 
     this.getTransactions();
   }
@@ -170,5 +159,18 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }, {});
 
     return Object.values(groupedTransactions);
+  }
+
+  changeDates(direction: boolean): void {
+    const periodMap: Record<number, (date: Date, amount: number) => Date> = {
+      1: direction ? addWeeks : subWeeks,
+      2: direction ? addMonths : subMonths,
+      3: direction ? addQuarters : subQuarters,
+      4: direction ? addYears : subYears,
+    };
+
+    this.activeDate = (periodMap[this.activePeriod.id] || (direction ? addMonths : subMonths))(this.activeDate, 1);
+
+    this.selectPeriod(this.activePeriod);
   }
 }

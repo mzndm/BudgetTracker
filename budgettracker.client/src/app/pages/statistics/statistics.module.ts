@@ -6,6 +6,7 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {BaseChartDirective} from "ng2-charts";
+import {SharedModule} from "../../shared/shared.module";
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
     MatTab,
     MatTabGroup,
     BaseChartDirective,
+    SharedModule,
   ]
 })
 export class StatisticsModule { }
