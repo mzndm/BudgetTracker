@@ -1,0 +1,53 @@
+<div class="container statistics">
+  <header class="page__header">
+    <h1 class="page__title">Statistics</h1>
+  </header>
+
+  <div class="periods">
+    <div class="periods__container">
+      <span class="periods__title">Period: </span>
+      @for (period of periods; track period.name) {
+        <button mat-button
+                class="periods__button" [class.periods__button--active]="activePeriod.id == period.id"
+                (click)="selectPeriod(period)">
+          {{period.label}}
+        </button>
+      }
+    </div>
+
+    <div class="diapason">
+      <button mat-icon-button class="button button__icon"
+              (click)="changeDates(false)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="diapason__date">
+        {{activeDate | period: activePeriod.id}}
+      </div>
+
+      <button mat-icon-button class="button button__icon"
+              (click)="changeDates(true)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-tab-group class="tabs" animationDuration="0">
+    @for (tab of statisticsTabs; track tab.id) {
+      <mat-tab [label]="tab.name">
+        <div class="statistics__container">
+          <div class="chart">
+            <span class="chart__total">Total <br /> {{tab.total}} UAH</span>
+            <canvas baseChart
+                    class="chart__canvas"
+                    width="500" height="500"
+                    [data]="tab.cgf.data"
+                    [labels]="tab.cgf.data.labels"
+                    [type]="tab.cgf.type">
+            </canvas>
+          </div>
+        </div>
+      </mat-tab>
+    }
+  </mat-tab-group>
+</div>

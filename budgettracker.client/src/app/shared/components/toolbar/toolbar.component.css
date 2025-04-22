@@ -4,12 +4,31 @@
   padding: 1rem;
 }
 
+.toolbar__logo {
+  &.menu__item {
+    padding-left: 0;
+  }
+}
+
 .menu {
   display: flex;
-  width: 100%;
   padding: 0 2rem;
 }
 
 .menu__item {
   padding: 0 1rem;
+  text-decoration: none;
+
+  a {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: nowrap;
+    color: var(--primary-color);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--orange-color);
+    }
+  }
 }

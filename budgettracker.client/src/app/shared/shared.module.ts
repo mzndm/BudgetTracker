@@ -5,16 +5,20 @@ import {RouterLink} from "@angular/router";
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
+import { PeriodPipe } from './pipes/period.pipe';
 
 
 
 @NgModule({
   declarations: [
     ToolbarComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    PeriodPipe
   ],
   exports: [
-    ToolbarComponent
+    ToolbarComponent,
+    PeriodPipe
   ],
   imports: [
     CommonModule,
@@ -24,6 +28,7 @@ import {MatButton} from "@angular/material/button";
     MatDialogActions,
     MatDialogClose,
     MatButton,
+    MatIcon,
   ]
 })
 export class SharedModule { }

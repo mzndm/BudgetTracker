@@ -23,12 +23,14 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "chart.js": "^4.4.9",
     "date-fns": "^4.1.0",
+    "jest-editor-support": "*",
+    "ng2-charts": "^7.0.0",
+    "run-script-os": "*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3",
-    "jest-editor-support": "*",
-    "run-script-os": "*"
+    "zone.js": "~0.14.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.4",
