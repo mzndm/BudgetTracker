@@ -78,7 +78,19 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         }
       },
       total: 0,
-    }
+    },
+    {
+      id: 2,
+      name: 'Both',
+      cgf: {
+        type: 'doughnut',
+        data: {
+          labels: [],
+          datasets: []
+        }
+      },
+      total: 0,
+    },
   ];
 
   startDate = format(startOfMonth(new Date()), 'yyyy-MM-dd');
@@ -133,16 +145,32 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   createCharts(): void {
     this.statisticsTabs.forEach(tab => {
-      const filtered = this.transactions$.value?.filter(t => t.type === tab.id);
-      const grouped = this.groupTransactions(filtered!);
+      if (tab.id != 2) {
+        const filtered = this.transactions$.value?.filter(t => t.type === tab.id);
+        const grouped = this.groupTransactions(filtered!);
 
-      tab.cgf.data = {
-        labels: grouped.map((t: any) => t.categoryName),
-        datasets: [{data: grouped.map((t: any) => t.totalAmount)}]
+        tab.cgf.data = {
+          labels: grouped.map((t: any) => t.categoryName),
+          datasets: [{data: grouped.map((t: any) => t.totalAmount)}]
+        }
+
+        tab.total = grouped.map((t: any) => t.totalAmount)
+          .reduce((acc: number, num: number) => acc + num, 0);
       }
 
-      tab.total = grouped.map((t: any) => t.totalAmount)
-        .reduce((acc: number, num: number) => acc + num, 0);
+      if (tab.id === 2) {
+        const expenses = this.transactions$.value?.filter(t => t.type === 0)
+          .reduce((acc, t) => acc += t.amount, 0);
+
+        const incomes = this.transactions$.value?.filter(t => t.type === 1)
+          .reduce((acc, t) => acc += t.amount, 0);
+
+        tab.cgf.data = {
+          labels: ['Incomes', 'Expenses'],
+          datasets: [{ data: [incomes!, expenses!]}]
+        }
+        tab.total = incomes! - expenses!;
+      }
     });
   }
 
