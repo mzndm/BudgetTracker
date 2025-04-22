@@ -75,6 +75,15 @@
       </mat-select>
     </mat-form-field>
 
+    <div class="picker">
+      <mat-form-field class="form__field">
+        <input matInput class="picker__input"
+               formControlName="date" [matDatepicker]="datepicker">
+        <mat-datepicker-toggle matIconSuffix [for]="datepicker" />
+        <mat-datepicker #datepicker  disabled="false" />
+      </mat-form-field>
+    </div>
+
     <mat-form-field class="form__field">
       <mat-label>Note</mat-label>
       <textarea matInput formControlName="note"></textarea>

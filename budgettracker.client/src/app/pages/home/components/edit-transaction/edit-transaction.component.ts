@@ -1,20 +1,26 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit,} from '@angular/core';
 import {Account, Category, Transaction} from "../../../../shared/models";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
-import {MatOptionSelectionChange} from "@angular/material/core";
+import {MatOptionSelectionChange, provideNativeDateAdapter} from "@angular/material/core";
+import {format} from "date-fns";
 
 interface IEditTransaction {
   transaction?: Transaction;
   accounts: Account[];
   categories: Category[];
+  date: string;
 }
 
 @Component({
   selector: 'app-edit-transaction',
   templateUrl: './edit-transaction.component.html',
-  styleUrl: './edit-transaction.component.css'
+  styleUrl: './edit-transaction.component.css',
+  providers: [
+    provideNativeDateAdapter()
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditTransactionComponent implements OnInit {
   readonly data = inject<IEditTransaction>(MAT_DIALOG_DATA);
@@ -34,8 +40,14 @@ export class EditTransactionComponent implements OnInit {
     categoryName: [''],
     categoryIcon: [''],
     note: [''],
+    date: [''],
     accountIdTo: [null],
     accountNameTo: [null],
+  });
+
+  public dateControl: FormControl = new FormControl({
+    value: format(new Date(), 'yyyy-MM-dd'),
+    disabled: true
   });
 
   parentCategoryIdControl = new FormControl(0);
@@ -74,6 +86,7 @@ export class EditTransactionComponent implements OnInit {
       categoryName: defaultCategory?.name,
       categoryIcon: defaultCategory?.icon,
       note: '',
+      date: new Date(this.data.date),
       accountIdTo: null,
       accountNameTo: null,
     };
@@ -81,6 +94,7 @@ export class EditTransactionComponent implements OnInit {
     this.parentCategoryIdControl.setValue(defaultParentCategory!.id);
     this.form.setValue(defaultValues);
     this.parentChanged(defaultParentCategory!.id);
+    this.dateControl.setValue(format(this.data.date, 'yyyy-MM-dd'));
   };
 
   fillForm(transaction: Transaction): void {

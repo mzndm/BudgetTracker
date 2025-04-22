@@ -95,15 +95,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       width: '400px',
       data: {
         accounts: this.accounts$.value,
-        categories: this.categories$.value
+        categories: this.categories$.value,
+        date: this.activeDate.value
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.createTransaction({
-          date: this.activeDate.value,
-          ...result
+          ...result,
+          date: format(result.date, 'yyyy-MM-dd') + 'T00:00:00.00Z',
         })
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(() => this.getTransactions());
@@ -126,6 +127,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           categoryName: transaction.categoryName,
           categoryIcon: transaction.categoryIcon,
           note: transaction.note,
+          date: transaction.date,
           accountIdTo: transaction.accountIdTo,
           accountNameTo: transaction.accountNameTo,
         },
@@ -138,7 +140,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (result) {
         this.dataService.updateTransaction({
           ...transaction,
-          ...result
+          ...result,
+          date: format(result.date, 'yyyy-MM-dd') + 'T00:00:00.00Z',
         })
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(() => this.getTransactions());
