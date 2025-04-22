@@ -4,14 +4,16 @@
   </header>
 
   <div class="periods">
-    <span>Periods: </span>
-    @for (period of periods; track period.name) {
-      <button mat-button
-              class="periods__button" [class.periods__button--active]="activePeriod.id == period.id"
-              (click)="selectPeriod(period)">
-        {{period.label}}
-      </button>
-    }
+    <div class="periods__container">
+      <span class="periods__title">Period: </span>
+      @for (period of periods; track period.name) {
+        <button mat-button
+                class="periods__button" [class.periods__button--active]="activePeriod.id == period.id"
+                (click)="selectPeriod(period)">
+          {{period.label}}
+        </button>
+      }
+    </div>
 
     <div class="diapason">
       today: {{activeDate | date: 'dd MMM YYYY'}}
@@ -23,9 +25,10 @@
       <mat-tab [label]="tab.name">
         <div class="statistics__container">
           <div class="chart">
-            <span class="chart__total">Total <br /> {{tab.total}}</span>
+            <span class="chart__total">Total <br /> {{tab.total}} UAH</span>
             <canvas baseChart
                     class="chart__canvas"
+                    width="500" height="500"
                     [data]="tab.cgf.data"
                     [labels]="tab.cgf.data.labels"
                     [type]="tab.cgf.type">

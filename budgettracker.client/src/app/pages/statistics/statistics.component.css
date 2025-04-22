@@ -1,0 +1,56 @@
+.statistics {}
+
+.periods {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.periods__button {
+  color: var(--primary-color) !important;
+  border: 1px solid var(--primary-color);
+  border-radius: 0;
+
+  &:first-of-type {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+  }
+
+  &:last-of-type {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+  }
+}
+
+.periods__button--active {
+  color: var(--yellow-color) !important;
+  background-color: var(--primary-color);
+}
+
+.statistics__container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.chart {
+  position: relative;
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*height: 500px;*/
+}
+
+.chart__total {
+  position: absolute;
+  width: 235px;
+  height: 235px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--primary-color);
+  border-radius: 50%;
+}
