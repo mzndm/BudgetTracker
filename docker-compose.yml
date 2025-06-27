@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  server:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
+    build:
+      context: ./BudgetTracker.Server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__Default=Server=db;Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD}
+
+  client:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./budgettracker.client:/app
+    command: sh -c "npm install && npm run build && npx serve -s dist"
+    ports:
+      - "80:3000"
+    depends_on:
+      - server
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=${DB_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
