@@ -4,8 +4,8 @@ services:
   server:
     container_name: budgettracker-api
     build:
-      context: ./BudgetTracker.Server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: BudgetTracker.Server/Dockerfile
     ports:
       - "5000:80"
     depends_on:
