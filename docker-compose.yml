@@ -17,7 +17,7 @@ services:
       
   client:
     container_name: budgettracker-client-builder
-    restart: always
+    restart: "no"
     image: node:18
     working_dir: /app
     volumes:
