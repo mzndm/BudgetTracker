@@ -59,10 +59,23 @@ namespace BudgetTracker.Server
                 });
             });
 
+            // Додай у метод ConfigureServices:
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    builder => builder
+                        .WithOrigins("http://localhost", "http://192.168.50.67")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials());
+            });
+
             var app = builder.Build();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseCors("AllowFrontend");
 
             app.MapIdentityApi<IdentityUser>();
 
