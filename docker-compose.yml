@@ -31,7 +31,7 @@ services:
 
   nginx:
     container_name: budgettracker-nginx
-    image: nginx:stable-alpine
+    image: nginx:stable
     ports:
       - "80:80"
     volumes:
