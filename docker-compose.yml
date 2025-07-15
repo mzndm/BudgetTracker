@@ -1,46 +1,32 @@
-version: '3.9'
+version: "3.9"
 
 services:
-  # ---------------- Backend API ----------------
-  server:
+  frontend:
+    container_name: budgettracker-nginx
+    image: nginx:alpine
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./dist:/usr/share/nginx/html:ro
+    expose:
+      - 80
+    depends_on:
+      - backend
+
+  backend:
     container_name: budgettracker-api
     restart: always
     build:
       context: .
       dockerfile: BudgetTracker.Server/Dockerfile
-    ports:
-      - "5000:80"
+    expose:
+      - 80
     depends_on:
       - db
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Default=Server=db;Database=${DB_NAME};User Id=${DB_USER};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;
 
-  client-builder:
-    container_name: budgettracker-client-builder
-    image: node:18
-    working_dir: /app
-    volumes:
-      - ./budgettracker.client:/app
-      - ./nginx/html:/app/dist
-    command: >
-      sh -c "npm install &&
-             npm run build -- --output-path=dist &&
-             cp -r dist/budgettracker.client/* dist/"
-    restart: "no"
-
-  nginx:
-    container_name: budgettracker-nginx
-    image: nginx:stable
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/html:/usr/share/nginx/html:ro
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - client-builder
-
-  # ---------------- MSSQL Database ----------------
   db:
     container_name: budgettracker-db
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -53,6 +39,14 @@ services:
       - mssql-data:/var/opt/mssql
       - /home/ubuntu/mssql/backup:/var/opt/mssql/backup
     restart: always
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: budgettracker-tunnel
+    restart: unless-stopped
+    command: tunnel --config /root/.cloudflared/config.yml run
+    volumes:
+      - ./cloudflared:/etc/cloudflared
 
 volumes:
   mssql-data:
