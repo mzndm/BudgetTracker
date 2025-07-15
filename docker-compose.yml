@@ -44,9 +44,9 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: budgettracker-tunnel
     restart: unless-stopped
-    command: tunnel --config /root/.cloudflared/config.yml run
+    command: tunnel run
     volumes:
-      - ./cloudflared:/etc/cloudflared
+      - /root/.cloudflared:/etc/cloudflared
 
 volumes:
   mssql-data:
