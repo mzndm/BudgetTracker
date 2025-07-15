@@ -64,7 +64,7 @@ namespace BudgetTracker.Server
             {
                 options.AddPolicy("AllowFrontend",
                     builder => builder
-                        .WithOrigins("http://localhost", "http://192.168.50.67", "money-api.mzndm.top")
+                        .WithOrigins("http://localhost", "http://192.168.50.67", "https://money.mzndm.top")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());
