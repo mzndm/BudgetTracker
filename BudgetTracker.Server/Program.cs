@@ -12,7 +12,7 @@ namespace BudgetTracker.Server
             var builder = WebApplication.CreateBuilder(args);
 
             var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Default")
-                                  ?? builder.Configuration.GetConnectionString("Default")
+                                  ?? builder.Configuration.GetConnectionString("DefaultConnection")
                                   ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));

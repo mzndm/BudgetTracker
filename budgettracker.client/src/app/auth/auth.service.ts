@@ -10,17 +10,18 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private userSource = new ReplaySubject<AuthUser | null>(1);
   user$ = this.userSource.asObservable();
+  private apiBasePath = environment.production ? `${environment.appUrl}` : `${environment.appUrl}/auth`;
 
   constructor(
     private http: HttpClient
   ) { }
 
   register(model: Register) {
-    return this.http.post(`/auth/register`, model);
+    return this.http.post(`${this.apiBasePath}/register`, model);
   }
 
   login(model: Login) {
-    return this.http.post<AuthUser>(`/auth/login`, model)
+    return this.http.post<AuthUser>(`${this.apiBasePath}/login`, model)
     .pipe(
       map((user: AuthUser) => {
         if (user) {
@@ -45,7 +46,7 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     const refreshToken = JSON.parse(localStorage.getItem(environment.userKey)!)?.refreshToken;
-    return this.http.post<AuthUser>(`/auth/refresh`, { refreshToken })
+    return this.http.post<AuthUser>(`${this.apiBasePath}/refresh`, { refreshToken })
       .pipe(
         map((user: AuthUser) => {
           if (user) {
