@@ -12,6 +12,7 @@
 
 .menu {
   display: flex;
+  flex-grow: 1;
   padding: 0 2rem;
 }
 
@@ -29,6 +30,18 @@
 
     &:hover {
       color: var(--orange-color);
+    }
+  }
+}
+
+.user__menu {
+  .button {
+    &.icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
     }
   }
 }

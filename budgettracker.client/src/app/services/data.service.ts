@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Account, Category, Transaction, TransactionHttpParams} from "../shared/models";
+import {Account, Category, Transaction, TransactionHttpParams, UserProfile} from "../shared/models";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -86,5 +86,16 @@ export class DataService {
   }
 
   // #end Transactions
+
+  // #start UserProfile
+  getUserProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiBasePath}/UserProfiles`)
+  }
+
+  updateUserProfile(user: UserProfile): Observable<UserProfile> {
+    return this.http.put<UserProfile>(`${this.apiBasePath}/UserProfiles/${user.id}`, user)
+  }
+
+  // #end UserProfile
 
 }

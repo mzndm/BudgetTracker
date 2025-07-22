@@ -13,4 +13,27 @@
       </div>
     }
   </div>
+
+  <div class="user__menu">
+    @if (user$ | async; as user) {
+      <button class="button icon" mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User profile menu">
+        @if (user.userName) {
+          {{user.userName.charAt(0) | uppercase}}
+        } @else {
+          <mat-icon>menu</mat-icon>
+        }
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/userProfile">
+          <span>Edit User</span>
+        </button>
+
+        <button mat-menu-item (click)="logout()">
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    }
+
+  </div>
 </div>
