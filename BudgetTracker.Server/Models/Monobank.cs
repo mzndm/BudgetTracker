@@ -29,7 +29,7 @@ namespace BudgetTracker.Server.Models
     [Table("Transactions", Schema = "mono")]
     public class TransactionMono
     {
-        public required int Id { get; set; }
+        public required string Id { get; set; }
         [Timestamp]
         public int? Time { get; set; }
         public string? Description { get; set; }

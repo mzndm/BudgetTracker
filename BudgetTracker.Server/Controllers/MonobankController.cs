@@ -54,5 +54,36 @@ namespace BudgetTracker.Server.Controllers
             return Ok(clientInfo.Accounts);
         }
 
+        // GET: api/Monobank/statement
+        [HttpGet("statement")]
+        public async Task<ActionResult<IEnumerable<TransactionMono[]>>> GetMonobankStatement(
+            [FromQuery] string account,
+            [FromQuery] string from,
+            [FromQuery] string? to)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var apiKey = await _apiKeyService.GetMonobankApiKeyAsync(user.Id);
+
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                return BadRequest("Monobank API key not found for the user.");
+            }
+
+            var statement = await _monobankService.GetStatement(apiKey, account, from, to);
+
+            if (statement == null)
+            {
+                return BadRequest("Monobank statement not found.");
+            }
+
+            return Ok(statement);
+        }
+
     }
 }
