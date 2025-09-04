@@ -20,6 +20,8 @@ namespace BudgetTracker.Server.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; } = default!;
         public DbSet<UserProfile> UserProfile { get; set; } = default!;
+        public DbSet<AccountMono> AccountsMono { get; set; }
+        public DbSet<TransactionMono> TransactionsMono { get; set; } = default!;
 
     }
 }

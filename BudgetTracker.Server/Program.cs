@@ -1,4 +1,5 @@
 using BudgetTracker.Server.Data;
+using BudgetTracker.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -14,6 +15,9 @@ namespace BudgetTracker.Server
             var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Default")
                                   ?? builder.Configuration.GetConnectionString("DefaultConnection")
                                   ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.AddScoped<ApiKeyService>();
+            builder.Services.AddScoped<MonobankService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 

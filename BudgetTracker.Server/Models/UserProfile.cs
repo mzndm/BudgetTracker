@@ -18,6 +18,7 @@ namespace BudgetTracker.Server.Models
         public string Currency { get; set; } = "UAH";
         public int CurrencyCode { get; set; } = 980;
         public string? ApiKeyMonobank { get; set; }
+        public string? MonobankClientId { get; set; }
         public DateTime Created { get; set; }
         public DateTime Changed { get; set; }
     }
