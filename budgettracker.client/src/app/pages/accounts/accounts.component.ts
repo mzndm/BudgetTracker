@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Account} from "../../shared/models";
+import {Account, MonobankAccount} from "../../shared/models";
 import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
 import {DataService} from "../../services/data.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -21,6 +21,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();
 
   public accounts$ = new BehaviorSubject<Account[] | null>(null);
+  public monobankAccounts$ = new BehaviorSubject<MonobankAccount[] | null>(null);
   public dashboard$ = new BehaviorSubject<Dashboard | null>(null);
 
   constructor(
@@ -30,6 +31,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAccounts();
+    this.getMonobankAccounts();
 
     this.accounts$
       .pipe(takeUntil(this.unsubscribe$))
@@ -51,6 +53,14 @@ export class AccountsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$),
         tap(accounts => this.accounts$.next(accounts))
       )
+      .subscribe();
+  }
+
+  getMonobankAccounts(): void {
+    this.data.getMonobankAccounts()
+      .pipe(
+        takeUntil(this.unsubscribe$), 
+        tap(accounts => this.monobankAccounts$.next(accounts)))
       .subscribe();
   }
 

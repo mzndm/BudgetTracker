@@ -10,6 +10,7 @@ import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatOption, MatSelect} from "@angular/material/select";
+import { SharedModule } from "../../shared/shared.module";
 
 const routes: Routes = [
   {
@@ -40,7 +41,8 @@ const routes: Routes = [
     MatDialogContent,
     MatDialogTitle,
     MatSelect,
-    MatOption
-  ]
+    MatOption,
+    SharedModule
+]
 })
 export class AccountsModule { }

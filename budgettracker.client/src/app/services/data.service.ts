@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Account, Category, Transaction, TransactionHttpParams, UserProfile} from "../shared/models";
+import {Account, Category, MonobankAccount, Transaction, TransactionHttpParams, UserProfile} from "../shared/models";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -98,4 +98,12 @@ export class DataService {
 
   // #end UserProfile
 
+  getMonobankAccounts(): Observable<MonobankAccount[]> {
+    return this.http.get<MonobankAccount[]>(`${this.apiBasePath}/monobank/accounts`)
+  }
+
+  getMonobankTransactions(params?: TransactionHttpParams | any): Observable<Transaction[]> {
+    const httpParams = new HttpParams({ fromObject: params });
+    return this.http.get<Transaction[]>(`${this.apiBasePath}/monobank/transactions`, { params: httpParams })
+  }
 }

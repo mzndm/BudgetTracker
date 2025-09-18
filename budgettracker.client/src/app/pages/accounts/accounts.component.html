@@ -58,4 +58,31 @@
       </div>
     }
   </div>
+
+  
+  @if ((monobankAccounts$ | async)) {    
+  <div class="accounts__list">    
+    <h2 class="page__subtitle">Monobank Accounts</h2>
+
+    @for (account of monobankAccounts$ | async; track account.id) {
+      <div class="account">
+        <figure class="account__icon">
+          <mat-icon>credit_card</mat-icon>
+        </figure>
+
+        <div class="account__info">
+          <div class="account__name">
+            {{account.type}} 
+            <span class="account__masked-pan">*{{account.maskedPan?.[0]?.slice(-4)}}</span>
+          </div>
+          <div class="account__amount" 
+               [class.account__amount--warn]="account.balance < 0">
+            {{ (account.balance - account.creditLimit) / 100 }} {{account.currencyCode | currencyCode}}
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  }
+  
 </div>

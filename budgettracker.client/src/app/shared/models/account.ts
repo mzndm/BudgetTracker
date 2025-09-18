@@ -16,3 +16,16 @@ export interface Account {
   owner: string; // User.Id
   changed: Date;
 }
+
+export interface MonobankAccount {
+  id: string;
+  sendId: string;
+  balance: number;
+  creditLimit: number;
+  type?: string;
+  currencyCode: number;
+  cashbackType?: string;
+  maskedPan?: string[];
+  iban?: string;
+  owner?: string;
+}

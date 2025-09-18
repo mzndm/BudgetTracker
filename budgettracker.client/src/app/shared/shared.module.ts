@@ -7,6 +7,7 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import { PeriodPipe } from './pipes/period.pipe';
+import { CurrencyCodePipe } from './pipes/currency-code.pipe';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 
 
@@ -15,11 +16,13 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
   declarations: [
     ToolbarComponent,
     DeleteDialogComponent,
-    PeriodPipe
+    PeriodPipe,
+    CurrencyCodePipe,
   ],
   exports: [
     ToolbarComponent,
-    PeriodPipe
+    PeriodPipe,
+    CurrencyCodePipe,
   ],
   imports: [
     CommonModule,

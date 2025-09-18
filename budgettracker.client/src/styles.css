@@ -35,6 +35,10 @@ h1, h2, h3, h4, h5, h6 {
   .page__title {
     font-size: 2rem;
   }
+
+  .page__subtitle {
+    font-size: 1.8rem;
+  }
 }
 
 .page__header {
