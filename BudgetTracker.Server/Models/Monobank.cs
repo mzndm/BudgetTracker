@@ -24,6 +24,7 @@ namespace BudgetTracker.Server.Models
         public string? CashbackType { get; set; }
         public string[]? MaskedPan { get; set; }
         public string? Iban { get; set; }
+        public string? Owner { get; set; } // User.Id
 
     }
 
@@ -63,6 +64,7 @@ namespace BudgetTracker.Server.Models
         public string? CounterEdrpou { get; set; }
         public string? CounterIban { get; set; }
         public string? CounterName { get; set; }
+        public string? Owner { get; set; } // User.Id
     }
 
 }

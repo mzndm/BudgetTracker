@@ -42,21 +42,11 @@ namespace BudgetTracker.Server.Controllers
                 return Unauthorized("User not authenticated.");
             }
 
-            var apiKey = await _apiKeyService.GetMonobankApiKeyAsync(user.Id);
+            var accounts = await _context.AccountsMono
+                .Where(a => a.Owner == user.Id)
+                .ToListAsync();
 
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                return BadRequest("Monobank API key not found for the user.");
-            }
-
-            var clientInfo = await _monobankService.GetClientInfo(apiKey);
-
-            if (clientInfo == null)
-            {
-                return BadRequest("Monobank user not found.");
-            }
-
-            return Ok(clientInfo.Accounts);
+            return Ok(accounts);
         }
 
         // POST: api/Monobank/sync-accounts
@@ -87,11 +77,12 @@ namespace BudgetTracker.Server.Controllers
             foreach (var monoAccount in clientInfo.Accounts)
             {
                 var existingAccount = await _context.AccountsMono
-                                                .FirstOrDefaultAsync(a => a.Id == monoAccount.Id);
+                    .FirstOrDefaultAsync(a => a.Id == monoAccount.Id);
 
                 if (existingAccount == null)
                 {
                     // Add new account
+                    monoAccount.Owner = user.Id;
                     _context.AccountsMono.Add(monoAccount);
                 }
                 else
@@ -106,6 +97,7 @@ namespace BudgetTracker.Server.Controllers
                     existingAccount.CashbackType = monoAccount.CashbackType;
                     existingAccount.MaskedPan = monoAccount.MaskedPan;
                     existingAccount.Iban = monoAccount.Iban;
+                    existingAccount.Owner = user.Id;
                 }
             }
 
@@ -117,10 +109,10 @@ namespace BudgetTracker.Server.Controllers
 
         // GET: api/Monobank/statement
         [HttpGet("statement")]
-        public async Task<ActionResult<IEnumerable<TransactionMono[]>>> GetMonobankStatement(
-            [FromQuery] string account,
-            [FromQuery] string from,
-            [FromQuery] string? to)
+        public async Task<ActionResult<IEnumerable<TransactionMono>>> GetMonobankStatement(
+            [FromQuery] string? accountId,
+            [FromQuery] long? from,
+            [FromQuery] long? to)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -129,27 +121,33 @@ namespace BudgetTracker.Server.Controllers
                 return Unauthorized("User not authenticated.");
             }
 
-            var apiKey = await _apiKeyService.GetMonobankApiKeyAsync(user.Id);
+            var query = _context.TransactionsMono
+                .Where(t => t.AccountMono.Owner == user.Id);
 
-            if (string.IsNullOrEmpty(apiKey))
+            if (!string.IsNullOrEmpty(accountId))
             {
-                return BadRequest("Monobank API key not found for the user.");
+                query = query.Where(t => t.AccountId == accountId);
             }
 
-            var statement = await _monobankService.GetStatement(apiKey, account, from, to);
-
-            if (statement == null)
+            if (from.HasValue)
             {
-                return BadRequest("Monobank statement not found.");
+                query = query.Where(t => t.Time >= from.Value);
             }
+
+            if (to.HasValue)
+            {
+                query = query.Where(t => t.Time <= to.Value);
+            }
+
+            var statement = await query.ToListAsync();
 
             return Ok(statement);
         }
 
 
-        // GET: api/Monobank/SyncTansactions
-        [HttpGet("sync-transactions")]
-        public async Task<IActionResult> GetTransactions([FromQuery] string accountId, [FromQuery] long? from, [FromQuery] long? to = null)
+        // POST: api/Monobank/SyncTansactions
+        [HttpPost("sync-transactions")]
+        public async Task<IActionResult> SyncTransactions([FromQuery] string accountId, [FromQuery] long? from, [FromQuery] long? to = null)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -190,6 +188,7 @@ namespace BudgetTracker.Server.Controllers
                     {
                         // Add new transaction
                         transaction.AccountId = accountId;
+                        transaction.Owner = user.Id;
                         _context.TransactionsMono.Add(transaction);
                     }
                     else
@@ -212,14 +211,15 @@ namespace BudgetTracker.Server.Controllers
                         existingTransaction.CounterEdrpou = transaction.CounterEdrpou;
                         existingTransaction.CounterIban = transaction.CounterIban;
                         existingTransaction.CounterName = transaction.CounterName;
+                        existingTransaction.Owner = user.Id;
                     }
                 }
             }
 
             await _context.SaveChangesAsync();
 
-            //return Ok("Monobank transactions synchronized successfully.");
-            return Ok(statement);
+            return Ok("Monobank transactions synchronized successfully.");
+            // return Ok(statement);
         }
 
     }
