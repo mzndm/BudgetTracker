@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal, ViewEncapsulation} from '@angular/core';
 import {provideNativeDateAdapter} from "@angular/material/core";
 import {FormControl} from "@angular/forms";
 import {addDays, format, subDays} from "date-fns";
 import {DataService} from "../../services/data.service";
-import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
-import {Account, Category, Transaction} from "../../shared/models";
+import {BehaviorSubject, map, Subject, takeUntil, tap} from "rxjs";
+import {Account, Category, MonobankAccount, MonobankTransaction, Transaction} from "../../shared/models";
 import {MatDialog} from "@angular/material/dialog";
 import {EditTransactionComponent} from "./components/edit-transaction/edit-transaction.component";
 import {DeleteDialogComponent} from "../../shared/components/delete-dialog/delete-dialog.component";
@@ -31,6 +31,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   categories$ = new BehaviorSubject<Category[]>([]);
   accounts$ = new BehaviorSubject<Account[]>([]);
 
+  monobankAccounts = signal<MonobankAccount[]>([]);
+  monobankTransactions = signal<MonobankTransaction[]>([]);
+
   constructor(
     private dataService: DataService,
     private dialog: MatDialog,
@@ -54,13 +57,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   getTransactions(): void {
     const date = format(new Date(this.activeDate.value), 'yyyy-MM-dd');
 
+    const fromUnixTime = Math.floor(new Date(date).getTime() / 1000);
+    const toUnixTime = Math.floor(new Date(addDays(date, 1)).getTime() / 1000);
+
     this.dataService.getTransactions({ startDate: date })
       .pipe(
         takeUntil(this.unsubscribe$),
         tap(data => this.transactions$.next(data))
       )
       .subscribe();
+
+    this.dataService.getMonobankTransactions({ from: fromUnixTime, to: toUnixTime })
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        map(data => data.sort((a, b) => a.time - b.time))
+      )
+      .subscribe(data => this.monobankTransactions.set(data));
   }
+
 
   getAccounts(): void {
     this.dataService.getAccounts()
@@ -69,6 +83,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         tap(data => this.accounts$.next(data))
       )
       .subscribe();
+
+    this.dataService.getMonobankAccounts()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => this.monobankAccounts.set(data))
   }
 
   getCategories(): void {

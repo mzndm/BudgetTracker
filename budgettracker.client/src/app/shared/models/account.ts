@@ -19,6 +19,7 @@ export interface Account {
 
 export interface MonobankAccount {
   id: string;
+  name?: string;
   sendId: string;
   balance: number;
   creditLimit: number;

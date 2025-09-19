@@ -32,8 +32,6 @@
 
     <div class="transactions__list list">
       @for (transaction of transactions$ | async; track transaction.id) {
-
-
         <div class="list__item">
           <mat-icon class="material-symbols-outlined list__icon">
             {{transaction.categoryIcon || "shopping_bag" }}
@@ -67,6 +65,27 @@
                   (click)="deleteTransaction(transaction.id)">
             <mat-icon>delete</mat-icon>
           </button>
+        </div>
+      }
+
+      @for (transaction of monobankTransactions(); track transaction.time) {
+        <div class="list__item">
+          <mat-icon class="material-symbols-outlined list__icon">shopping_bag</mat-icon>
+          
+          <div class="list__main">
+            <h4 class="list__title">{{transaction.mcc}}</h4>
+            <p class="list__text">{{transaction.description}}</p>
+          </div>
+  
+          <div class="details">
+            <p class="amount"
+               [class.amount__income]="transaction.operationAmount > 0">
+              {{transaction.operationAmount / 100}} {{transaction.currencyCode | currencyCode}}
+            </p>
+            <p class="account">
+              {{transaction.accountId | accountName : monobankAccounts()}}
+            </p>
+          </div>        
         </div>
       }
     </div>

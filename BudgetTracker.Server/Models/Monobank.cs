@@ -20,6 +20,7 @@ namespace BudgetTracker.Server.Models
         public long Balance { get; set; }
         public long CreditLimit { get; set; }
         public string? Type { get; set; }
+        public string? Name { get; set; }
         public required int CurrencyCode { get; set; }
         public string? CashbackType { get; set; }
         public string[]? MaskedPan { get; set; }

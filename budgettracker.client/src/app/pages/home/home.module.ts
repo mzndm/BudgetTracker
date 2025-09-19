@@ -16,6 +16,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { EditTransactionComponent } from './components/edit-transaction/edit-transaction.component';
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatOption, MatSelect} from "@angular/material/select";
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -50,7 +51,8 @@ const routes: Routes = [
     MatDialogContent,
     MatSelect,
     MatOption,
-    MatDialogActions
+    MatDialogActions,
+    SharedModule,
   ]
 })
 export class HomeModule { }

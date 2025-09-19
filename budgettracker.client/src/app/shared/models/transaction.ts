@@ -18,6 +18,29 @@ export interface Transaction {
   changed: Date;
 }
 
+export interface MonobankTransaction {
+  id: string;
+  accountId?: string;
+  time: number;
+  description?: string;
+  mcc?: number;
+  originalMcc?: number;
+  hold?: boolean;
+  amount: number;
+  operationAmount: number;
+  currencyCode: number;
+  commissionRate?: number;
+  cashbackAmount?: number;
+  balance?: number;
+  comment?: string;
+  receiptId?: string;
+  invoiceId?: string;
+  counterEdrpou?: string;
+  counterIban?: string;
+  counterName?: string;
+  owner?: string; // User.Id
+}
+
 export interface TransactionHttpParams {
   startDate?: Date,
   endDate?: Date
