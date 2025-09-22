@@ -100,6 +100,14 @@ export class DataService {
 
   getMonobankAccounts(): Observable<MonobankAccount[]> {
     return this.http.get<MonobankAccount[]>(`${this.apiBasePath}/monobank/accounts`)
+  }  
+
+  getMonobankAccount(id: string): Observable<MonobankAccount> {
+    return this.http.get<MonobankAccount>(`${this.apiBasePath}/monobank/account/${id}`)
+  }
+
+  syncMonobankAccounts(): Observable<any> {
+    return this.http.post(`${this.apiBasePath}/monobank/sync-accounts`, null)
   }
 
   getMonobankTransactions(params?: TransactionHttpParams | any): Observable<MonobankTransaction[]> {

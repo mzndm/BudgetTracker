@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Account, MonobankAccount} from "../../shared/models";
-import {BehaviorSubject, Subject, takeUntil, tap} from "rxjs";
+import {BehaviorSubject, Subject, switchMap, takeUntil, tap} from "rxjs";
 import {DataService} from "../../services/data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {EditAccountComponent} from "./components/edit-account/edit-account.component";
@@ -136,5 +136,15 @@ export class AccountsComponent implements OnInit, OnDestroy {
           .subscribe(() => this.getAccounts());
       }
     });
+  }
+
+  syncMonoAccounts(): void {
+    this.data.syncMonobankAccounts()
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap(() => this.data.getMonobankAccounts()),
+        tap(accounts => this.monobankAccounts$.next(accounts))
+      )
+      .subscribe();
   }
 }

@@ -49,6 +49,70 @@ namespace BudgetTracker.Server.Controllers
             return Ok(accounts);
         }
 
+        // GET: api/Monobank/account/{id}
+        [HttpGet("account/{id}")]
+        public async Task<ActionResult<AccountMono>> GetMonobankAccount(string id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            var account = await _context.AccountsMono
+                .FirstOrDefaultAsync(a => a.Id == id && a.Owner == user.Id);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(account);
+        }
+
+        // PUT: api/Monobank/account/{id}
+        [HttpPut("account/{id}")]
+        public async Task<IActionResult> UpdateMonobankAccount(string id, [FromBody] AccountMono updatedAccount)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            if (updatedAccount == null || id != updatedAccount.Id)
+            {
+                return BadRequest("Invalid account data.");
+            }
+
+            var account = await _context.AccountsMono
+                .FirstOrDefaultAsync(a => a.Id == id && a.Owner == user.Id);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            // Update fields
+            account.SendId = updatedAccount.SendId;
+            account.Balance = updatedAccount.Balance;
+            account.CreditLimit = updatedAccount.CreditLimit;
+            account.Type = updatedAccount.Type;
+            account.Name = updatedAccount.Name;
+            account.CurrencyCode = updatedAccount.CurrencyCode;
+            account.CashbackType = updatedAccount.CashbackType;
+            account.MaskedPan = updatedAccount.MaskedPan;
+            account.Iban = updatedAccount.Iban;
+            // Owner should not be changed here
+
+            _context.AccountsMono.Update(account);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         // POST: api/Monobank/sync-accounts
         [HttpPost("sync-accounts")]
         public async Task<IActionResult> SyncAccounts()
@@ -103,7 +167,8 @@ namespace BudgetTracker.Server.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Monobank accounts synchronized successfully.");
+            // Return a JSON object instead of a plain string to avoid invalid JSON response
+            return Ok(new { message = "Monobank accounts synchronized successfully." });
         }
 
 

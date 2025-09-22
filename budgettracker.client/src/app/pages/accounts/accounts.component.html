@@ -61,8 +61,15 @@
 
   
   @if ((monobankAccounts$ | async)) {    
-  <div class="accounts__list">    
-    <h2 class="page__subtitle">Monobank Accounts</h2>
+  <div class="accounts__list">
+    <header class="accounts__header">
+      <h2 class="page__subtitle">Monobank Accounts</h2>
+
+      <button mat-icon-button class="account__button"
+              (click)="syncMonoAccounts()">
+        <mat-icon>sync</mat-icon>
+      </button>
+    </header>    
 
     @for (account of monobankAccounts$ | async; track account.id) {
       <div class="account">
