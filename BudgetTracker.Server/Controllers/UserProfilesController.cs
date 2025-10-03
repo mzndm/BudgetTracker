@@ -43,7 +43,18 @@ namespace BudgetTracker.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(userProfile);
+            var result = new
+            {
+                id = userProfile.Id,
+                currency = userProfile.Currency,
+                currencyCode = userProfile.CurrencyCode,
+                email = userProfile.Email,
+                monobankClientId = userProfile.MonobankClientId,
+                userName = userProfile.UserName,
+                userId = userProfile.UserId
+            };
+
+            return Ok(result);
         }
 
         // PUT: api/UserProfiles/5
