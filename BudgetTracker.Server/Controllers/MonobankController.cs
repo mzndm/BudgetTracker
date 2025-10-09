@@ -204,7 +204,7 @@ namespace BudgetTracker.Server.Controllers
                 query = query.Where(t => t.Time <= to.Value);
             }
 
-            var statement = await query.ToListAsync();
+            var statement = await query.OrderByDescending(t => t.Time).ToListAsync();
 
             return Ok(statement);
         }
@@ -283,8 +283,7 @@ namespace BudgetTracker.Server.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Monobank transactions synchronized successfully.");
-            // return Ok(statement);
+            return Ok(new { message = "Monobank transactions synchronized successfully." });
         }
 
     }

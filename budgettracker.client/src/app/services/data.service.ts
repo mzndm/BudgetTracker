@@ -114,4 +114,9 @@ export class DataService {
     const httpParams = new HttpParams({ fromObject: params });
     return this.http.get<MonobankTransaction[]>(`${this.apiBasePath}/monobank/statement`, { params: httpParams })
   }
+
+  syncMonobankTransactions(params?: TransactionHttpParams | any): Observable<any> {
+    const httpParams = new HttpParams({ fromObject: params });
+    return this.http.post(`${this.apiBasePath}/monobank/sync-transactions`, null, { params: httpParams })
+  }
 }

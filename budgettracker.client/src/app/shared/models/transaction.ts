@@ -7,8 +7,8 @@ export interface Transaction {
   accountId: number;
   accountName: string;
   categoryId: number;
-  categoryName: string;
-  categoryIcon: string;
+  categoryName?: string;
+  categoryIcon?: string;
   date: Date;
   accountIdTo: number;
   accountNameTo: string;
@@ -42,6 +42,7 @@ export interface MonobankTransaction {
 }
 
 export interface TransactionHttpParams {
-  startDate?: Date,
-  endDate?: Date
+  accountId?: string,
+  from?: number,
+  to?: number,
 }

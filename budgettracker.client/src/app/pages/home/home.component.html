@@ -32,61 +32,11 @@
 
     <div class="transactions__list list">
       @for (transaction of transactions$ | async; track transaction.id) {
-        <div class="list__item">
-          <mat-icon class="material-symbols-outlined list__icon">
-            {{transaction.categoryIcon || "shopping_bag" }}
-          </mat-icon>
-
-          <div class="list__main">
-            <h4 class="list__title">{{transaction.categoryName}}</h4>
-            <p class="list__text">{{transaction.note}}</p>
-          </div>
-
-          <div class="details">
-            <p class="amount"
-               [class.amount__income]="transaction.type === 1"
-               [class.amount__transfer]="transaction.type === 2">
-              {{transaction.amount}} UAH
-            </p>
-            <p class="account">
-              {{transaction.accountName}}
-              @if (transaction.type === 2) {
-                => {{transaction.accountNameTo}}
-              }
-            </p>
-          </div>
-
-          <button mat-icon-button class="list__button"
-                  (click)="editTransaction(transaction)">
-            <mat-icon>edit</mat-icon>
-          </button>
-
-          <button mat-icon-button class="list__button list__button--delete"
-                  (click)="deleteTransaction(transaction.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
+        <app-transaction [transaction]="transaction" />
       }
 
       @for (transaction of monobankTransactions(); track transaction.time) {
-        <div class="list__item">
-          <mat-icon class="material-symbols-outlined list__icon">shopping_bag</mat-icon>
-          
-          <div class="list__main">
-            <h4 class="list__title">{{transaction.mcc}}</h4>
-            <p class="list__text">{{transaction.description}}</p>
-          </div>
-  
-          <div class="details">
-            <p class="amount"
-               [class.amount__income]="transaction.operationAmount > 0">
-              {{transaction.operationAmount / 100}} {{transaction.currencyCode | currencyCode}}
-            </p>
-            <p class="account">
-              {{transaction.accountId | accountName : monobankAccounts()}}
-            </p>
-          </div>        
-        </div>
+        <app-transaction [transaction]="transaction" />
       }
     </div>
   </div>

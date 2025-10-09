@@ -11,18 +11,24 @@ import {MatInput} from "@angular/material/input";
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatOption, MatSelect} from "@angular/material/select";
 import { SharedModule } from "../../shared/shared.module";
+import { AccountComponent } from './components/account/account.component';
 
 const routes: Routes = [
   {
     path: '',
     component: AccountsComponent,
   },
+  {
+    path: ':id',
+    component: AccountComponent,
+  },
 ]
 
 @NgModule({
   declarations: [
     AccountsComponent,
-    EditAccountComponent
+    EditAccountComponent,
+    AccountComponent
   ],
   imports: [
     CommonModule,

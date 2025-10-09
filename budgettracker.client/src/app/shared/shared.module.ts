@@ -10,6 +10,8 @@ import { PeriodPipe } from './pipes/period.pipe';
 import { CurrencyCodePipe } from './pipes/currency-code.pipe';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import { AccountNamePipe } from './pipes/account-name.pipe';
+import { TransactionComponent } from './components/transaction/transaction.component';
+import { AbsPipe } from './pipes/abs.pipe';
 
 
 
@@ -20,12 +22,16 @@ import { AccountNamePipe } from './pipes/account-name.pipe';
     PeriodPipe,
     CurrencyCodePipe,
     AccountNamePipe,
+    TransactionComponent,
+    AbsPipe,
   ],
   exports: [
     ToolbarComponent,
     PeriodPipe,
     CurrencyCodePipe,
     AccountNamePipe,
+    TransactionComponent,
+    AbsPipe,
   ],
   imports: [
     CommonModule,

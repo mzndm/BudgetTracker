@@ -72,7 +72,7 @@
     </header>    
 
     @for (account of monobankAccounts$ | async; track account.id) {
-      <div class="account">
+      <div class="account" [routerLink]="[account.id]"> 
         <figure class="account__icon">
           <mat-icon>credit_card</mat-icon>
         </figure>

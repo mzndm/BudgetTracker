@@ -6,6 +6,12 @@ export enum AccountTypes {
   BANK,
 }
 
+export enum AccountProvider {
+  MANUAL,
+  MONOBANK,
+  PRIVATBANK,
+}
+
 export interface Account {
   id: number;
   type: AccountTypes; // "cash" = 0, "card" = 1, "bank" = 2
@@ -15,6 +21,7 @@ export interface Account {
   status: Statuses; // "Active" = 1, "Inactive" = 0
   owner: string; // User.Id
   changed: Date;
+  provider: AccountProvider;
 }
 
 export interface MonobankAccount {
@@ -29,4 +36,5 @@ export interface MonobankAccount {
   maskedPan?: string[];
   iban?: string;
   owner?: string;
+  provider: AccountProvider;
 }
