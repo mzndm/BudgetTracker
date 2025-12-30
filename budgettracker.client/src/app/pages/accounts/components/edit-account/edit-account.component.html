@@ -4,9 +4,11 @@
     <mat-form-field class="form__field" appearance="fill">
       <mat-label>Account Type</mat-label>
       <mat-select formControlName="type" required>
-        <mat-option *ngFor="let type of accountTypes" [value]="type.value">
-          {{ type.label }}
-        </mat-option>
+        @for (type of accountTypes; track type) {
+          <mat-option [value]="type.value">
+            {{ type.label }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
