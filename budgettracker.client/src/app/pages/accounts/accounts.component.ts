@@ -13,9 +13,10 @@ interface Dashboard {
 }
 
 @Component({
-  selector: 'app-accounts',
-  templateUrl: './accounts.component.html',
-  styleUrl: './accounts.component.css'
+    selector: 'app-accounts',
+    templateUrl: './accounts.component.html',
+    styleUrl: './accounts.component.css',
+    standalone: false
 })
 export class AccountsComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();

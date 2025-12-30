@@ -14,13 +14,14 @@ interface IEditTransaction {
 }
 
 @Component({
-  selector: 'app-edit-transaction',
-  templateUrl: './edit-transaction.component.html',
-  styleUrl: './edit-transaction.component.css',
-  providers: [
-    provideNativeDateAdapter()
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-edit-transaction',
+    templateUrl: './edit-transaction.component.html',
+    styleUrl: './edit-transaction.component.css',
+    providers: [
+        provideNativeDateAdapter()
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EditTransactionComponent implements OnInit {
   readonly data = inject<IEditTransaction>(MAT_DIALOG_DATA);

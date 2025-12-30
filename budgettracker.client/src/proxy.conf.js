@@ -3,6 +3,7 @@ const { env } = require('process');
 
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
     env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'https://localhost:7168';
+// const target = 'https://money-api.mzndm.top';
 
 const PROXY_CONFIG = [
   {

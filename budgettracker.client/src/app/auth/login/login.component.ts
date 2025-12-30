@@ -14,18 +14,17 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrl: '../auth.css',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    RouterLink,
-  ],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrl: '../auth.css',
+    imports: [
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        RouterLink,
+    ]
 })
 export class LoginComponent implements OnDestroy {  
   private unsubscribe$: Subject<void> = new Subject();

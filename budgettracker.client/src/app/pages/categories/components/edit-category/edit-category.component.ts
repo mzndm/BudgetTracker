@@ -10,9 +10,10 @@ interface IEditCategory {
 }
 
 @Component({
-  selector: 'app-edit-category',
-  templateUrl: './edit-category.component.html',
-  styleUrl: './edit-category.component.css'
+    selector: 'app-edit-category',
+    templateUrl: './edit-category.component.html',
+    styleUrl: './edit-category.component.css',
+    standalone: false
 })
 export class EditCategoryComponent implements OnInit {
   readonly data = inject<IEditCategory>(MAT_DIALOG_DATA);

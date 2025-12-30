@@ -4,9 +4,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Account} from "../../../../shared/models";
 
 @Component({
-  selector: 'app-edit-account',
-  templateUrl: './edit-account.component.html',
-  styleUrl: './edit-account.component.css'
+    selector: 'app-edit-account',
+    templateUrl: './edit-account.component.html',
+    styleUrl: './edit-account.component.css',
+    standalone: false
 })
 export class EditAccountComponent implements OnInit {
   readonly data = inject<Account>(MAT_DIALOG_DATA);

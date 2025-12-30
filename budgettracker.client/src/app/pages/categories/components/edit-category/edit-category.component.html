@@ -4,9 +4,11 @@
     <mat-form-field class="form__field" appearance="fill">
       <mat-label>Category Type</mat-label>
       <mat-select formControlName="type" required>
-        <mat-option *ngFor="let type of categoryTypes" [value]="type.value">
-          {{ type.label }}
-        </mat-option>
+        @for (type of categoryTypes; track type) {
+          <mat-option [value]="type.value">
+            {{ type.label }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
