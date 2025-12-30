@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {format} from "date-fns";
 
 @Pipe({
-  name: 'period'
+    name: 'period',
+    standalone: false
 })
 export class PeriodPipe implements PipeTransform {
 

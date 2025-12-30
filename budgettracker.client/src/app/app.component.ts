@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {AuthService} from "./auth/auth.service";
 
 @Component({
-  selector: 'app-root',
-  template: `
+    selector: 'app-root',
+    template: `
     <div class="page">
       @if (this.authService.isLoggedIn()) {
         <div class="container">
@@ -11,7 +11,8 @@ import {AuthService} from "./auth/auth.service";
         </div>
       }
       <router-outlet />
-    </div>`
+    </div>`,
+    standalone: false
 })
 export class AppComponent {
   constructor(

@@ -3,9 +3,10 @@ import {DataService} from "../../../services/data.service";
 import {AuthService} from "../../../auth/auth.service";
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrl: './toolbar.component.css'
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    styleUrl: './toolbar.component.css',
+    standalone: false
 })
 export class ToolbarComponent {
   menu = [

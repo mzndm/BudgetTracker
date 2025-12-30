@@ -10,14 +10,15 @@ import {EditTransactionComponent} from "./components/edit-transaction/edit-trans
 import {DeleteDialogComponent} from "../../shared/components/delete-dialog/delete-dialog.component";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
-  providers: [
-    provideNativeDateAdapter()
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css',
+    providers: [
+        provideNativeDateAdapter()
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();

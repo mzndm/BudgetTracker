@@ -8,18 +8,17 @@ import { AuthService } from '../auth.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: '../auth.css',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    RouterLink,
-  ],
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrl: '../auth.css',
+    imports: [
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        RouterLink,
+    ]
 })
 export class RegisterComponent implements OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();

@@ -13,9 +13,10 @@ interface CategoryTab {
 }
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+    selector: 'app-categories',
+    templateUrl: './categories.component.html',
+    styleUrl: './categories.component.css',
+    standalone: false
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();
