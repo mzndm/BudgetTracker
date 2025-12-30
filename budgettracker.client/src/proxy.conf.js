@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { env } = require('process');
 
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
@@ -8,14 +9,30 @@ const PROXY_CONFIG = [
     context: ['/auth'],
     target,
     secure: false,
+    changeOrigin: true,
+    logLevel: 'debug',
+    headers: {
+      "CF-Access-Client-Id": env.CLOUDFLARE_CLIENT_ID || process.env.CLOUDFLARE_CLIENT_ID,
+      "CF-Access-Client-Secret": env.CLOUDFLARE_CLIENT_SECRET || process.env.CLOUDFLARE_CLIENT_SECRET,
+    },
     pathRewrite: {
       "^/auth": "",
+    },
+    onError: (err, req, res) => {
+      console.error('Proxy error:', err.message);
+      console.error('Make sure the backend server is running at:', target);
     },
   },
   {
     context: ['/api'],
     target,
-    secure: false
+    secure: false,
+    changeOrigin: true,
+    logLevel: 'debug',
+    onError: (err, req, res) => {
+      console.error('Proxy error:', err.message);
+      console.error('Make sure the backend server is running at:', target);
+    },
   }
 ]
 
